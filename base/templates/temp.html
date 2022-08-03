@@ -1,0 +1,86 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+Home Page
+{% endblock %}
+
+
+{% block myscripts %}
+
+  function onViewClicked(title, desc, location){
+    document.querySelector(".modal-title").innerHTML=title;
+    document.querySelector(".modal-body").innerHTML= desc +"\n" + location; 
+    //console.log(window.location.href+ location);
+  
+  }
+   
+  function call_payment(theme_to_buy) {
+    console.log(theme_to_buy);
+  }
+
+
+
+{% endblock myscripts %}
+
+<!--
+
+  function onViewClicked(title, desc, location){
+    console.log(location);
+    document.querySelector(".modal-title").innerHTML=title;
+    document.querySelector(".modal-body").innerHTML= location;
+
+  }
+                <button class="btn btn-success" type="button" > <a href ="{% url 'payment' %}" style="text-decoration: none;">Buy</a></button>
+
+--> 
+
+
+
+{% block content %}
+  <h1> Home Page</h1>
+  
+  <div class="container">
+
+    
+
+    <div class="row">
+
+
+      {% for theme in themes %}
+
+        <div class="col mb-5">
+        
+        
+          <div class="card" style="width: 18rem;">
+            <img src="{{ theme.theme_image.url }}"  width="250" height="250" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"> {{theme.theme_name}}</h5>
+              <p class="card-text">{{theme.description}}</p>
+
+              <div class="d-grid gap-2">
+                <a class="btn btn-outline-primary" type="button" href ="{%url 'sample' theme.id theme.theme_name %}" target="_blank">View</a>
+                <a class="btn btn-success" type="button" href ="{% url 'payment' theme.id%}" style="text-decoration: none;"> Buy  </a>
+              </div>
+
+            </div>
+          </div>
+        
+        </div>      
+
+
+      {%endfor%}
+
+
+    </div>
+
+
+
+  </div>
+  
+
+
+{% endblock %}
+<!--
+
+                  <a class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#myModal" onclick="return(onViewClicked('{{theme.theme_name}}','{{theme.description}}','{{theme.sample_page_location}}'));">View</button>
+-->

@@ -1,0 +1,209 @@
+
+<div class="row m-4">
+
+ 
+
+    <!-- Graph Element-->
+    <div class="col-12 col-sm-6 col-xl-6">
+        
+        
+        <div class="col-12 px-0 mb-4 ">
+            <div class="card border-2 shadow">
+                <div class="card-header d-flex flex-row align-items-center flex-0 border-bottom">
+
+                    <div class="col-12 col-xl-2 text-xl-center align-items-center justify-content-xl-center">
+                        <div class="icon-shape icon-shape-primary rounded me-4 me-sm-0">
+                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                        <div class="col-12 col-xl-7 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">RSVP</h2>
+                                <h3 class="fw-extrabold mb-2">{{invitees}} invitees</h3>
+                            </div>
+                            <div class="small d-flex mt-1">   
+                            
+                                <div>responded by <svg class="icon icon-xs text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg><span class="text-success fw-bolder">15%</span></div>
+                            </div>
+
+                         
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-body p-2">
+                    {% autoescape off %}
+                    {{ plot_div_invitee }}
+                    {% endautoescape %}
+
+                </div>
+            </div>
+        </div>
+
+    </div>   
+
+
+    
+    <!-- End of First Element-->
+
+     <!-- Graph Element second-->
+     <div class="col-12 col-sm-6 col-xl-6">
+        
+        
+        <div class="col-12 px-0 mb-4 ">
+            <div class="card border-0 shadow">
+                <div class="card-header d-flex flex-row align-items-center flex-0 border-bottom">
+
+                    <div class="col-12 col-xl-2 text-xl-center align-items-center justify-content-xl-center">
+                        <div class="icon-shape icon-shape-primary rounded me-4 me-sm-0">
+                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                        <div class="col-12 col-xl-7 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">Donation By Our Invitees</h2>
+                                <h3 class="fw-extrabold mb-2">Rs {{total_donation}}</h3>
+                            </div>
+                            <div class="small d-flex mt-1">                               
+                                <div>Donated by <svg class="icon icon-xs text-success" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg><span class="text-success fw-bolder">15%</span></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="card-body p-2">
+                    {% autoescape off %}
+                        {{plot_donation}}
+                    {% endautoescape %}
+
+                </div>
+            </div>
+        </div>
+
+    </div>   
+
+
+    
+    <!-- End of second Element-->
+
+
+
+</div>
+
+<!-- First  row ends-->
+
+
+
+<!-- Second row -->
+
+<div class="row m-4">
+
+ 
+
+    <!-- First Element-->
+    <div class="col-12 col-sm-12 col-xl-12">
+        
+        
+        <div class="col-12 px-0 mb-4 ">
+            <div class="card border-2 shadow">
+                <div class="card-header d-flex flex-row align-items-center flex-0 border-bottom">
+
+                    <div class="col-12 text-xl-center align-items-center justify-content-xl-center">
+                        Invitees Data
+                    </div>
+
+                </div>
+
+
+                <div class="card-body p-2">
+                    {% autoescape off %}
+                    {{ plot_invitees_detail }}
+                    {% endautoescape %}
+
+                </div>
+            </div>
+        </div>
+
+    </div>   
+
+
+    
+    <!-- End of First Element-->
+
+
+</div>
+<!-- End of Second Row-->
+
+
+<!--Third Row -->
+<div class="row m-4">
+
+ 
+
+    
+
+     <!-- Time OR Plan Expiry-->
+     <div class="col-12 col-sm-6 col-xl-6">
+        
+        
+        <div class="col-12 px-0 mb-4 ">
+            <div class="card border-0 shadow">
+                <div class="card-header d-flex flex-row align-items-center flex-0 border-bottom">
+
+                    <div class="col-12 col-xl-2 text-xl-center align-items-center justify-content-xl-center">
+                        <div class="icon-shape icon-shape-primary rounded me-4 me-sm-0">
+                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                        <div class="col-12 col-xl-7 px-xl-0">
+                            <div class="d-none d-sm-block">
+                                <h2 class="h6 text-gray-400 mb-0">Our Marriage Invitation</h2>
+                                <h3 class="fw-extrabold mb-2"> {{total_plan_days}} Days</h3>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="card-body p-2">
+                    {% autoescape off %}
+                        {{plot_plan_expiry}}
+                    {% endautoescape %}
+
+                </div>
+            </div>
+        </div>
+
+    </div>   
+
+
+    
+    <!-- End of second Element-->
+
+
+
+</div>
+
+<!--End Third row-->

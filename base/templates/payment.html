@@ -1,0 +1,109 @@
+{% extends 'layouts/base.html'%}
+
+{% block title %}
+Payment 
+{% endblock %}
+
+
+{% block myscripts %} 
+{% endblock myscripts%}
+
+
+{% block content %}
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div class="d-block mb-4 mb-md-0">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'home' %}">
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Payment</li>
+                </ol>
+            </nav>
+
+        </div>
+
+    </div>
+
+
+    <div class="container-fluid">
+        <!-- Content here -->
+        <div class="alert alert-info"> 
+            <h2> Place a Order</h2>
+            <p class="mb-0">Using your favorite payment system.</p>
+
+        </div>
+
+        <div class="p-4">
+            <form method="post" action="/add-order/" %}">
+                {% csrf_token %}          
+                {{ form.as_p }}
+                <hr>
+                <div class="d-grid gap-2">
+                    <input class="btn btn-outline-primary" type="submit" value="Payment Done"/>
+                    <a class="btn btn-success" type="button" href ="{% url 'home'%}">Payment Failed</a> 
+  
+                
+                </div>
+            </form>
+            <button id="payment-button">Online Payment</button>
+
+        </div>
+
+
+    </div>
+
+
+{% endblock %}
+
+
+{% block extrajs%}
+
+
+<script>
+
+    function verifyPayment(payload) {
+        $.ajax({
+            url: "{% url 'verify_payment' %}",
+            type: "POST",
+            data: payload,
+            dataType: 'json',
+            success: function (response) { alert(response) },
+            error: function (error) { alert(error.responseJSON['message']) }
+        });
+    }
+
+    var config = {
+        // replace the publicKey with yours
+        "publicKey": "test_public_key_f7d8cf373ddc4d4ca42ee5406019d15c",
+        "productIdentity": "1234567890",
+        "productName": "Dragon",
+        "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
+        "eventHandler": {
+            onSuccess(payload) {
+                // hit merchant api for initiating verfication
+                console.log(payload);
+                verifyPayment(payload)
+            },
+            onError(error) {
+                console.log(error);
+            },
+            onClose() {
+                console.log('widget is closing');
+            }
+        }
+    };
+
+    var checkout = new KhaltiCheckout(config);
+    var btn = document.getElementById("payment-button");
+    btn.onclick = function () {
+        checkout.show({ amount: 1000 });
+    }
+</script>
+
+
+{% endblock %}

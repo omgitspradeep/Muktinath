@@ -1,0 +1,483 @@
+
+{% extends 'marriage/theme01_base.html' %}
+{% load i18n %}
+
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+<h1>Sample|{{theme_name}} </h1>
+
+
+
+<!--
+  CHanging header image
+      background: url({{data.header_image_url}}) no-repeat center top;
+
+-->
+
+{% block mystyle %}
+  #headerwrap {
+    background: url({{data.header_image_url}}) no-repeat center top;
+    margin-top: -50px;
+    padding-top: 120px;
+    text-align: center;
+    background-attachment: relative;
+    background-position: center center;
+    min-height: 850px;
+    width: 100%;
+    -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    -o-background-size: 100%;
+    background-size: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-bottom: 100px;
+  }
+{% endblock mystyle %}
+    
+
+
+
+<!--  ===== TITLE ===== -->
+
+{%block title%}  Ram weds Sita| Invitaion   {%endblock title%}
+
+
+<!-- ==== JAVASCRIPT ==== -->
+{%block writescript%}
+
+  //Code of ajax
+  // Code for raining animation
+
+  var count=0;   // 0: !raining &  1: raining
+  var createHeartVar='';
+  function createHeart(){
+
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * 100 + "vw";
+      heart.style.color=`hsl(${Math.floor(Math.random()*360)}, 100%, 50%)`;
+    // to make animation between 2 to 5 seconds
+    heart.style.animationDuration = Math.random()*2 +3 +"s"
+    heart.innerText='🇳🇵🇳🇵 सिता ♥️ राम 🇳🇵🇳🇵';
+    document.body.appendChild(heart);
+
+    setTimeout(()=>{
+        heart.remove();
+    },5000);
+  }
+
+
+
+  function heartController(){
+    if (count === 0){
+      count=1;
+      createHeartVar=setInterval(createHeart,300);
+    }else{
+      count=0;
+      clearInterval(createHeartVar);
+    }
+    
+  }
+    
+    //setInterval(createHeart,300)
+    
+
+    
+  // CODE TO REMEMBER CLICKED IMAGES OF GALLERY
+  function onGalleryImageClicked(location,title,desc){
+    document.querySelector(".modal-title").innerHTML=title;
+    document.querySelector("#modal-desc").innerHTML=desc;
+    document.querySelector("#modal-image").src=location;
+  
+  }
+    
+    
+{%endblock writescript%}
+    
+    
+    
+    
+
+    
+<!-- ==== NAVBAR ==== -->
+{%block navbar%}
+
+<div class="navbar-header">
+  <div class="pull-left logo">
+    <a class="" onhover = "cursor: pointer;" onclick = "return(heartController());"><img src="{% static data.title_image %}" /></a>
+  </div>
+  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+</div>
+
+<div class="navbar-collapse collapse">
+  <ul class="nav navbar-nav pull-right">
+    <li><a href="#home-section" class="smoothScroll">{% trans 'Welcome' %}</a></li>
+    <li> <a href="#services" class="smoothScroll">{% trans 'Events' %}</a></li>		  
+    <li> <a href="#about" class="smoothScroll">{% trans 'About Us' %}</a></li>
+    <li> <a href="#portfolio" class="smoothScroll">{% trans 'Gallery' %}</a></li>
+    <li> <a href="#team" class="smoothScroll">{% trans 'Testimonials' %}</a></li>
+    <li> <a href="#contact" class="smoothScroll">{% trans 'Place' %}</a></li>
+    <li> <a href="#wishes" class="smoothScroll">{% trans 'Wishes' %}</a></li>
+
+  </ul>
+</div>
+
+{%endblock navbar%}
+   
+    
+
+
+    
+    
+    <!-- ==== HEADERWRAP ==== -->
+    
+{%block headwrap%}
+  <h1>Ram & Sita </h1>
+  <p>{% trans 'We are getting Married on' %} {{data.marry_date_text}} </p>
+{%endblock headwrap%}
+    
+    
+    
+
+
+
+    
+    <!-- ==== EVENTS ==== -->
+    
+{%block services%}
+  <h2 class="centered">{% trans 'EVENTS' %}</h2>
+  <hr>
+  <div class="col-lg-8 col-lg-offset-2">
+    <img src="{% static 'Marriage/images/misc/ganesh.png' %}" alt="Ganesh Image" width="200" height="200">
+    <h3> वक्रतुंड महाकाय कोटिसूर्यसमप्रभ । निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा ॥ </h3>
+    
+    <p class="large">“Oh! Lord (Ganesha), of huge body and curved elephant trunk, whose brilliance is equal to billions of suns, always remove all obstacles from my endeavors.”</p>
+  
+  </div>
+  <div class="col-lg-4 callout"> <i class="fa fa-users fa-3x"></i>
+    <h3>{% trans 'Engagement' %}</h3>
+    <p> {{data.engagement_date}}</p>
+  </div>
+  <div class="col-lg-4 callout"> <i class="fa fa-bell fa-3x"></i>
+    <h3>{% trans 'Wedding Day' %}</h3>
+    <p>{{data.wedding_day}} <br/>
+      {% trans 'Janti Prasthan' %} - {{data.janti_prasthan_time}} <br/>
+      {{data.janti_prsthan_place}}
+    </p>
+
+  </div>
+  <div class="col-lg-4 callout"> <i class="fa fa-star fa-3x"></i>
+    <h3>{% trans 'Reception' %}</h3>
+    <p>{{data.reception_date}}<br/>
+      {{data.reception_time}} <br/>
+      {{data.reception_place}}</p>
+  </div>
+
+{%endblock services%}
+
+    
+
+
+
+
+
+
+    
+    <!-- Invitaion Message Section --> 
+    
+{%block InvitationMessage%}
+  <div class="row col-sm-5">
+
+
+      <p><b>{{inviteeObj.gender}} {{inviteeObj.name}}</b>,</br>
+      {{inviteeObj.address}}</p>
+
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+        <label class="form-check-label" for="flexCheckChecked">
+        <p><b>({{inviteeObj.inviteStatus}} )</b>
+        </label>
+
+      </div>
+
+  </div>
+  <div class="row col-sm-7 ">
+    <h4 class="text-info"> {{inviteeObj.default_invitation_msz}} </h4>
+  </div>
+{%endblock InvitationMessage%}
+    
+    
+
+
+
+
+    <!-- ==== ABOUT ===={% static 'Marriage/images/data/s.png' %} -->
+    
+{%block about%}
+
+  <h2 class="centered">{% trans 'ABOUT US' %}</h2>
+  <hr>
+  <div class="col-md-6 "> 
+    <img class="img-responsive" src= "{% static 'Marriage/images/aboutus/about_default.jpg' %}" style="max-height:400px"> 
+  </div
+  <div class="col-md-6">
+    
+    <h3>{% trans 'Groom' %}</h3>
+    <p >{{ aboutus.groom.info }}<br/>
+    <b><i>{{ aboutus.groom.address }}</i></b></p
+    <h3>{% trans 'Bride' %}</h3>
+    <p>{{ aboutus.bride.info }}<br/>
+    <b><i>{{ aboutus.bride.address }}</i></b></p>     
+  </div>
+
+{%endblock about%}
+
+
+
+
+
+
+    
+    <!-- ==== PORTFOLIO/ Gallery ==== -->
+    
+{%block gallery%}
+
+<div class="row">
+  <h2 class="centered">{% trans 'GALLERY' %}</h2>
+  <hr>
+  <div class="col-lg-8 col-lg-offset-2 centered">
+    <p class="large">These photos we shared with you are the best captured moments of our lives. We are looking forward to even more happy moments together.</p>
+  </div>
+</div>
+
+<!-- /row -->
+<div class="container">
+  <div class="row"> 
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">title is displayed here.........</h4>
+          </div>
+          <div class="modal-body">
+            <p><img id ="modal-image" class="img-responsive" ></p>
+            <p id="modal-desc"> detail is displayed here........... </p> 
+          </div> 
+        </div>
+        <!-- /.modal-content --> 
+      </div>
+      <!-- /.modal-dialog --> 
+    </div>
+                <!-- /.modal --> 
+
+    
+    {% for photo in gallery %}
+      <!-- PORTFOLIO IMAGE 1 -->
+      <div class="col-md-4 ">
+        <div class="grid overlay">
+          <figure> <img class="img-responsive" src="{% static photo.image %}" alt="">
+            <figcaption>
+              <h5>{{photo.title}}</h5>
+              <a data-toggle="modal" href="#myModal" class="btn btn-default" onclick="return(onGalleryImageClicked('{% static photo.image %}','{{photo.title}}','{{photo.desc}}'));">More Details</a> </figcaption>
+            <!-- /figcaption --> 
+          </figure>
+          <!-- /figure --> 
+        </div>
+        <!-- /grid-overlay --> 
+      </div>
+    {%endfor%}
+
+
+
+    <!-- /col --> 
+  </div>
+  <!-- /row --> 
+</div>
+<!-- /row --> 
+{%endblock gallery%}
+    
+            
+    
+    
+    
+    
+    
+    <!-- ==== Testimonials ==== -->
+    
+{%block testimonials%}
+
+<div class="row centered">
+  <h2 class="centered">{% trans 'TESTIMONIALS' %}</h2>
+  <hr>
+    <div class="col-lg-8 col-lg-offset-2 centered">
+    <p>No relationship is all sunshine, but two people can share one umbrella and survive the storm together.</p>
+      <br/>
+  </div>
+      
+    <div class="col-lg-3 centered"> <img class="img img-circle" src="{% static parents.bd.image %}" height="120px" width="120px" alt="">
+      <h4><strong>Bride's Father</strong></h4>
+      <p>  {{parents.bd.name}}</p>  
+    </div>
+
+    <div class="col-lg-3 centered"> <img class="img img-circle" src="{% static parents.bm.image %}" height="120px" width="120px" alt="">
+      <h4><strong>Bride's Mother</strong></h4>
+      <p>  {{parents.bm.name}}</p>  
+    </div>
+
+    <div class="col-lg-3 centered"> <img class="img img-circle" src="{% static parents.gd.image %}" height="120px" width="120px" alt="">
+      <h4><strong>Groom's Father</strong></h4>
+      <p>  {{parents.gd.name}}</p>  
+    </div>
+
+    <div class="col-lg-3 centered"> <img class="img img-circle" src="{% static parents.gm.image %}" height="120px" width="120px" alt="">
+      <h4><strong>Groom's Mother</strong></h4>
+      <p>  {{parents.gm.name}}</p>  
+    </div>
+
+
+</div>
+<br/>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col" class="text-body">GrandParents</th>
+      <th scope="col" style="font-size: 1.4rem;">{{testi.grand_parents}}</th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th scope="col" class="text-body">Fathers</th>
+      <th scope="col" style="font-size: 1.4rem;">{{testi.parents}} </th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th scope="col" class="text-body">Brothers</th>
+      <th scope="col" style="font-size: 1.4rem;">{{testi.brothers}} </th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th scope="col" class="text-body">Sisters</th>
+      <th scope="col" style="font-size: 1.4rem;">{{testi.sisters}} </th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th scope="col" class="text-body">Nephews</th>
+      <th scope="col" style="font-size: 1.4rem;">{{testi.nephews}} </th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th scope="col" class="text-body">Cousins</th>
+      <th scope="col" style="font-size: 1.4rem;">{{testi.cousins}} </th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th scope="col" class="text-body">Uncles</th>
+      <th scope="col" style="font-size: 1.4rem;">{{testi.maternal}} </th>
+    </tr>
+  </thead>
+
+</table>
+
+{%endblock testimonials%}
+    
+    
+
+
+
+
+
+    <!-- ==== MEETING POINT / PLACE ==== -->
+    
+{%block place%}
+
+<div class="row">
+  <h2 class="centered">{% trans 'MEETING POINT' %}</h2>
+  <hr>
+</div>
+
+<div class="row">
+  <div class="col-md-7">
+      <strong>{% trans 'Ask how to Reach Us!' %}</strong>
+    <p>{{meetingPoint.direction_info}} </p>
+        
+    <!--Google map भेला स्थल-->
+    <div id="map-container-google-1" class="z-depth-1-half map-container" style="height: 500px">
+      <iframe src="https://maps.google.com/maps?q={{meetingPoint.longitude}}, {{meetingPoint.latitude}}&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+    <!--Google Maps -->
+  </div>
+    
+  <div class="col-md-5">         
+      <i class="fa fa-map-marker fa-2x"></i>
+    <strong>{{meetingPoint.palace_name}}</strong>
+      <p>{{meetingPoint.address}}</p><br/> 
+      <i class="fa fa-envelope-o fa-2x"></i>
+    <p>{{meetingPoint.email_or_fb_link}}</p><br/> 
+      <i class="fa fa-phone fa-2x"></i>
+    <p> {{meetingPoint.contact_num}}</p>     
+    </div>
+</div>
+
+{%endblock place%}
+  
+    
+
+
+
+    
+    <!-- ==== WISHES ==== -->
+    
+{%block inviteewish%}
+
+<h2 class="centered">{% trans 'Your Best Wishes' %}</h2><hr>
+
+<!-- Open a whole column of wish display -->
+
+<div class="row" id="wishDisplaySection">
+
+  {%for wis in wishes %}
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body ">
+          <h4 class="card-title ">{{wis.invitee_name}}</h4>
+          <div class="card-text bg-success">
+            {{wis.wish}}<br/>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%endfor%}
+          
+</div>
+      <!-- Closes a whole column of wish display -->
+
+{%endblock inviteewish%}
+        
+    
+    
+    
+    
+{%block foottail%}
+<div class="col-md-8"> <span class="copyright">{% trans 'Love, laughter and happily ever after.' %}</span> </div>
+<div class="col-md-4">
+  <ul class="list-inline social-buttons">
+    <li><a href="{{contact.twitter_link}}"><i class="fa fa-twitter fa-2x"></i></a> </li>
+    <li><a href="{{contact.fb_link}}"><i class="fa fa-facebook fa-2x"></i></a> </li>
+    <li><a href="{{contact.yt_link}}"><i class="fa fa-youtube fa-2x"></i></a> </li>
+    <li><a href="{{contact.lnkd_link}}"><i class="fa fa-linkedin fa-2x"></i></a> </li>
+  </ul>
+</div>
+
+{%endblock foottail%}
+    
+  

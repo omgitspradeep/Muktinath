@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+<html lang="en" >
+   <head>
+      <link rel="shortcut icon" href="favicon.png" type="image/png"> 
+      <meta charset="UTF-8">
+   
+      <title>Theme 03|Test</title>
+      <link rel="stylesheet" href="{% static 'Marriage/theme03/css/style.css' %}" >
+
+   </head>
+
+
+
+   <body>
+      <!-- partial:index.partial.html -->
+      <div class="sakura-falling"></div>
+      <p style="text-align:center" id="play" ><b>Theme 03 | Listen your mood</b></p>
+      <div class="music">
+        <audio src="{% static 'Marriage/mp3/song.mp3' %}" id="my_audio" loop="loop"></audio> 
+      </div>
+
+      <!-- partial -->
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+      <script src="{% static 'Marriage/theme03/js/jquery-sakura.min.js' %}"></script>
+
+   </body>
+
+
+   <script>
+      (function ($) {
+         "use strict";
+         $('.sakura-falling').sakura();
+      })(jQuery);
+
+      $('#play').on('click', function(){
+         document.getElementById("my_audio").play();
+      });
+   </script>
+
+</html>

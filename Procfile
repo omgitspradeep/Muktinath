@@ -1,0 +1,1 @@
+web: gunicorn muktinath.wsgi --log-file -

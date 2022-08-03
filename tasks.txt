@@ -1,0 +1,10 @@
+*1. Verify all account apis
+*2. Once verified, make sure to implement all the apps of "happycouples"
+*3. Remove redundency and verify all the apis.
+*4. Verify all the features in webpage.
+*5. Implement all mobile apis from old project and verify (except account ones) and verify them.
+*6. Make sure email works while resetting password for both web and mobile.
+7. Make sure email works while ordering the INvitation order.
+7. Verify and Host the website
+8. Implement apis in app.
+9. Work on documentation.

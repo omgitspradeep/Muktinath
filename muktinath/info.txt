@@ -1,0 +1,10 @@
+1. To securely store Email password and other sensitive details
+django-dotenv
+
+2. To use gitignore for not sending ".env" file where sensitive data regarding Email are stored.
+-> Install a extension in vscode : gitignore
+-> Press "ctrl +shift +p" twice
+-> Select "Add gitignore"
+-> Choose "Python"
+-> New ".gitignore" file will be created and our ".env" file will be ignored 
+

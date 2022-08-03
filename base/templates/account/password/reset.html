@@ -1,0 +1,40 @@
+{% extends "account/base.html" %}
+{% load l10n %}
+
+
+{% block title %}Reset Password{% endblock %}
+
+{% block content %} 
+
+
+
+<div class="container pt-4">
+  <div class="col-lg-4 shadow p-0 mx-auto">
+    <div class="alert alert-info"> Reset Password </div>
+    <div class="p-4">
+
+
+
+        <form action="" method="post">
+          {% csrf_token %}
+
+          {% for fm in form  %}
+            {{fm.label_tag}} {{fm}}<br> 
+            <br>
+          {% endfor %}
+         
+          <button class="btn btn-outline-info" type="submit"> Request password Reset</button>
+          
+        
+        </form>
+
+
+
+
+    </div>
+    </div>
+  </div>
+</div>
+
+
+{%endblock%}

@@ -1,0 +1,87 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% load crispy_forms_filters %}
+
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+
+{% block title %}{% trans "Signup" %}{% endblock %}
+
+
+{% block content %}
+
+
+
+
+<main>
+    <section class="vh-lg-100 mt-5 mt-lg-0 bg-soft d-flex align-items-center">
+        <div class="container">
+            <p class="text-center">
+                <a href="{% url 'home' %}" class="d-flex align-items-center justify-content-center">
+                    <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
+                    Back to homepage
+                </a>
+            </p>
+            <div class="row justify-content-center form-bg-image" data-background-lg="/static/assets/img/illustrations/signin.svg">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="bg-white shadow border-0 rounded border-light p-4 p-lg-5 w-100 fmxw-500">
+                        <div class="text-center text-md-center mb-4 mt-md-0">
+                            <h1 class="mb-0 h3">Create Account </h1>
+
+                        </div>
+
+
+                        <form class="signup" id="signup_form" method="post" action="{% url 'signup' %}">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            {% if redirect_field_value %}
+                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                            {% endif %}
+                            <div class="d-grid mt-3">
+                                <button class="btn btn-gray-800 mt-3" type="submit">{% trans "Sign Up" %}</button>
+                            </div>
+                        </form>
+
+
+
+
+ 
+                        <!-- Login with social media -->
+                        {% include 'includes/loginwith.html' %}
+
+                    
+                        <div class="d-flex justify-content-center align-items-center mt-4">
+                            <span class="fw-normal">
+                                {% blocktrans %}Already have an account?
+                                <a href="{{ login_url }}" class="fw-bold">Login here{% endblocktrans %}</a>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

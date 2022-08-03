@@ -1,0 +1,1 @@
+This all fonts are necessary for font-awesome.min.css. It helps to render images like trash and social media icons.

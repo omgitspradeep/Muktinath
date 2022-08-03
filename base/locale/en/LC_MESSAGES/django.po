@@ -1,0 +1,318 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-15 08:50+0545\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: base/forms.py:43
+msgid "Number should not be less than 10"
+msgstr "Number should not be less than 10"
+
+#: base/models.py:12 base/models.py:18
+msgid "number"
+msgstr ""
+
+#: base/models.py:13
+msgid "Please Enter your DOB (mm-dd-yyyy)"
+msgstr ""
+
+#: base/models.py:19
+msgid "Please Enter number."
+msgstr ""
+
+#: base/models.py:23
+msgid "num"
+msgstr ""
+
+#: base/models.py:24
+msgid "nums"
+msgstr ""
+
+#: base/templates/account/base.html:40
+msgid "ABABIAS"
+msgstr ""
+
+#: base/templates/account/base.html:49
+msgid "Profile"
+msgstr ""
+
+#: base/templates/account/base.html:53
+msgid "My Orders"
+msgstr ""
+
+#: base/templates/account/base.html:57
+msgid "Change E-mail"
+msgstr ""
+
+#: base/templates/account/base.html:61
+msgid "Logout"
+msgstr ""
+
+#: base/templates/account/base.html:66 base/templates/login.html:41
+msgid "Login"
+msgstr ""
+
+#: base/templates/account/base.html:70 base/templates/account/signup.html:11
+#: base/templates/account/signup.html:24
+#: base/templates/socialaccount/signup.html:11
+#: base/templates/socialaccount/signup.html:61
+msgid "Sign Up"
+msgstr ""
+
+#: base/templates/account/email.html:6 base/templates/account/email.html:10
+msgid "E-mail Addresses"
+msgstr ""
+
+#: base/templates/account/email.html:12
+msgid "The following e-mail addresses are associated with your account:"
+msgstr ""
+
+#: base/templates/account/email.html:26
+msgid "Verified"
+msgstr ""
+
+#: base/templates/account/email.html:28
+msgid "Unverified"
+msgstr ""
+
+#: base/templates/account/email.html:30
+msgid "Primary"
+msgstr ""
+
+#: base/templates/account/email.html:36
+msgid "Make Primary"
+msgstr ""
+
+#: base/templates/account/email.html:37
+msgid "Re-send Verification"
+msgstr ""
+
+#: base/templates/account/email.html:38
+#: base/templates/socialaccount/connections.html:36
+msgid "Remove"
+msgstr ""
+
+#: base/templates/account/email.html:45
+msgid "Warning:"
+msgstr ""
+
+#: base/templates/account/email.html:45
+msgid ""
+"You currently do not have any e-mail address set up. You should really add "
+"an e-mail address so you can receive notifications, reset your password, etc."
+msgstr ""
+
+#: base/templates/account/email.html:50
+msgid "Add E-mail Address"
+msgstr ""
+
+#: base/templates/account/email.html:55
+msgid "Add E-mail"
+msgstr ""
+
+#: base/templates/account/email.html:66
+msgid "Do you really want to remove the selected e-mail address?"
+msgstr ""
+
+#: base/templates/account/login.html:8 base/templates/account/login.html:13
+#: base/templates/account/login.html:48
+msgid "Sign In"
+msgstr ""
+
+#: base/templates/account/login.html:18
+#, python-format
+msgid ""
+"Please sign in with one\n"
+"    of your existing third party accounts.<br>Or, <a href=\"%(signup_url)s"
+"\">sign up</a>\n"
+"    for a %(site_name)s account and sign in below:"
+msgstr ""
+
+#: base/templates/account/login.html:28
+msgid "OR"
+msgstr ""
+
+#: base/templates/account/login.html:35
+#, python-format
+msgid ""
+"If you have not created an account yet, then please\n"
+"    <a href=\"%(signup_url)s\">sign up</a> first."
+msgstr ""
+
+#: base/templates/account/login.html:49
+msgid "Forgot Password?"
+msgstr ""
+
+#: base/templates/account/logout.html:5 base/templates/account/logout.html:9
+#: base/templates/account/logout.html:18
+msgid "Sign Out"
+msgstr ""
+
+#: base/templates/account/logout.html:11
+msgid "Are you sure you want to sign out?"
+msgstr ""
+
+#: base/templates/account/password_reset.html:12
+msgid "Password Reset"
+msgstr ""
+
+#: base/templates/account/password_reset.html:19
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+
+#: base/templates/account/password_reset.html:37
+msgid "Reset My Password"
+msgstr ""
+
+#: base/templates/account/password_reset.html:49
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr ""
+
+#: base/templates/account/signup.html:7
+#: base/templates/socialaccount/signup.html:7
+msgid "Signup"
+msgstr ""
+
+#: base/templates/account/signup.html:13
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+
+#: base/templates/login.html:16
+msgid "Login Here"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:145
+msgid "Welcome"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:146
+msgid "Events"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:147
+msgid "About Us"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:148
+msgid "Gallery"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:149
+msgid "Testimonials"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:150
+msgid "Place"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:151
+msgid "Wishes"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:164
+msgid "We are getting Married on"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:173
+msgid "EVENTS"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:183
+msgid "Engagement"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:187
+msgid "Wedding Day"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:189
+msgid "Janti Prasthan"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:195
+msgid "Reception"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:249
+msgid "ABOUT US"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:254
+msgid "Groom"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:258
+msgid "Bride"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:272
+msgid "GALLERY"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:338
+msgid "TESTIMONIALS"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:423
+msgid "MEETING POINT"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:429
+msgid "Ask how to Reach Us!"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:459
+msgid "Your Best Wishes"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:467
+msgid "Submit wish"
+msgstr ""
+
+#: base/templates/marriage_themes/theme_01.html:511
+msgid "Love, laughter and happily ever after."
+msgstr ""
+
+#: base/templates/socialaccount/connections.html:5
+#: base/templates/socialaccount/connections.html:9
+msgid "Account Connections"
+msgstr ""
+
+#: base/templates/socialaccount/connections.html:12
+msgid ""
+"You can sign in to your account using any of the following third party "
+"accounts:"
+msgstr ""
+
+#: base/templates/socialaccount/connections.html:44
+msgid ""
+"You currently have no social network accounts connected to this account."
+msgstr ""
+
+#: base/templates/socialaccount/connections.html:48
+msgid "Add a 3rd Party Account"
+msgstr ""
+
+#: base/templates/socialaccount/signup.html:13
+#, python-format
+msgid ""
+"You are about to use your %(provider_name)s account to login to\n"
+"%(site_name)s. As a final step, please complete the following form:"
+msgstr ""

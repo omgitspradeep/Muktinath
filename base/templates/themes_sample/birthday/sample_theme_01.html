@@ -1,0 +1,16 @@
+{% extends 'birthday/theme01_base.html' %}
+{% load i18n %}
+
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+<h1>Sample|{{theme_name}} </h1>
+
+{%block title%} 
+Birthday 
+{%endblock title%}
+
+
+{%block body%} 
+<h4> {{msg}}</h4>
+{%endblock body%}

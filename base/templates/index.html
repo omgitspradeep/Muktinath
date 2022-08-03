@@ -1,0 +1,234 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+Home Page
+{% endblock %}
+
+<!-- Specific Page JS goes HERE  -->    
+{% block stylesheets %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+  // To Stop "Search form" submission when "Enter" key is pressed.
+  $(document).keypress(
+    function(event){
+      if (event.which == '13') {
+        event.preventDefault();
+      }
+  });
+
+  // When page first loads
+  $(document).ready(function () {
+
+    getThemes();
+    
+  });
+
+
+  function getThemes(){
+    $.ajax({
+            type:"GET",
+            dataType: "JSON",
+            url: "{% url 'themes' %}", 
+            success: function(data){
+
+              var outerdiv = document.getElementById("datarow");
+              
+              for (let i = 0; i < data.length; i++) {
+
+                var divcol = document.createElement('div');
+                divcol.classList.add('col', 'mb-5');
+
+                var divcard = document.createElement('div');
+                divcard.className = "card";
+                divcard.style.width = "18rem";
+
+
+                var img = document.createElement('img');
+                img.setAttribute('src', data[i].theme_image);
+                img.width = "250";
+                img.height ="250";
+                img.className='card-img-top';
+
+
+                var divcbody = document.createElement('div');
+                divcbody.className='card-body';
+
+                var h1 = document.createElement('h5'); 
+                h1.className='card-title';
+                h1.append(data[i].theme_name);
+
+                var p1 = document.createElement('p');
+                h1.className='card-text';
+                p1.append(data[i].description);
+
+
+
+                var linksdiv = document.createElement('div');
+                linksdiv.classList.add('d-grid', 'gap-2');
+
+                let ids = data[i].id
+                let tname = data[i].theme_name
+
+                var a1 = document.createElement('a');
+                a1.classList.add('btn', 'btn-outline-primary');
+                a1.setAttribute('type','button');
+                a1.setAttribute('href',`sample/${ids}/${tname}`);
+                a1.setAttribute('target','_blank')
+                a1.append("View");
+
+                var a2 = document.createElement('a');
+                a2.classList.add('btn', 'btn-success');
+                a2.setAttribute('type','button');
+                a2.setAttribute('href',`payment/${ids}`);
+                a2.setAttribute('target','_blank')
+                a2.append("Buy");
+
+
+                linksdiv.append(a1);
+                linksdiv.append(a2);
+                divcbody.append(linksdiv);
+
+                divcbody.append(h1);
+                divcbody.append(p1);
+                divcard.append(img);
+                divcard.append(divcbody);
+                divcol.append(divcard);
+                outerdiv.append(divcol)
+
+              }              
+
+            }
+        });
+
+  }
+
+</script>
+
+{% endblock stylesheets %}
+ 
+
+
+{% block content %}
+  <h1> Home Page</h1>
+  
+  <div class="container" >
+    <div class="row" id = "datarow">
+
+
+
+    </div>
+  </div>
+  
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+<script>
+  function getSearchedThemes(){
+    console.log("JUST CLICKED");
+    var theme_target = document.getElementById("topbarInputIconLeft").value;
+
+
+    $.ajax({
+            type:"GET",
+            dataType: "JSON",
+            url: `themes/?search=${theme_target}`, 
+            success: function(data){
+              console.log(data)
+              var outerdiv = document.getElementById("datarow");
+              // Removing all inner data
+              outerdiv.innerHTML = '';
+
+              if (data.length!=0) {
+                for (let i = 0; i < data.length; i++) {
+
+                  var divcol = document.createElement('div');
+                  divcol.classList.add('col', 'mb-5');
+
+                  var divcard = document.createElement('div');
+                  divcard.className = "card";
+                  divcard.style.width = "18rem";
+
+
+                  var img = document.createElement('img');
+                  img.setAttribute('src', data[i].theme_image);
+                  img.width = "250";
+                  img.height ="250";
+                  img.className='card-img-top';
+
+
+                  var divcbody = document.createElement('div');
+                  divcbody.className='card-body';
+
+                  var h1 = document.createElement('h5'); 
+                  h1.className='card-title';
+                  h1.append(data[i].theme_name);
+
+                  var p1 = document.createElement('p');
+                  h1.className='card-text';
+                  p1.append(data[i].description);
+
+
+
+                  var linksdiv = document.createElement('div');
+                  linksdiv.classList.add('d-grid', 'gap-2');
+
+                  let ids = data[i].id
+                  let tname = data[i].theme_name
+
+                  var a1 = document.createElement('a');
+                  a1.classList.add('btn', 'btn-outline-primary');
+                  a1.setAttribute('type','button');
+                  a1.setAttribute('href',`sample/${ids}/${tname}`);
+                  a1.setAttribute('target','_blank')
+                  a1.append("View");
+
+                  var a2 = document.createElement('a');
+                  a2.classList.add('btn', 'btn-success');
+                  a2.setAttribute('type','button');
+                  a2.setAttribute('href',`payment/${ids}`);
+                  a2.setAttribute('target','_blank')
+                  a2.append("Buy");
+
+
+                  linksdiv.append(a1);
+                  linksdiv.append(a2);
+                  divcbody.append(linksdiv);
+
+                  divcbody.append(h1);
+                  divcbody.append(p1);
+                  divcard.append(img);
+                  divcard.append(divcbody);
+                  divcol.append(divcard);
+                  outerdiv.append(divcol)
+
+                  }              
+
+
+              } else {
+                outerdiv.append('The Theme you requested is out of scope. Please try again.')
+
+              }
+
+              
+            }
+        });
+
+    
+  }
+
+
+</script>
+
+{% endblock javascripts %}  
+
+
+
+
+<!--
+
+                  <a class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#myModal" onclick="return(onViewClicked('{{theme.theme_name}}','{{theme.description}}','{{theme.sample_page_location}}'));">View</button>
+-->
