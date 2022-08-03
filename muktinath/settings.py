@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-+m_$*^s*32851^-o4b!34$f6t*e-_!%ytpl-j6c@bt43$z#nq(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','muktinath.herokuapp.com']
 
 
 # Application definition
@@ -139,7 +139,7 @@ AUTH_PASSWORD_VALIDATORS = [
 #Invitation link's sub part used in url.py, models.py, admin.py or resources.py . This is for DRY approach.
 INVITATION_SUB_PART ='/you-are-invited/'
 
-SITE_URL = '127.0.0.1:8000'
+SITE_URL = 'muktinath.herokuapp.com'
 
 # Internationalization
 
@@ -220,6 +220,7 @@ PASSWORD_RESET_TIMEOUT = 900 # 900 SEC = 15 MIN  is the time required for user t
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://127.0.0.1:9000",
+    "https://muktinath.herokuapp.com"
 ]
 
 
