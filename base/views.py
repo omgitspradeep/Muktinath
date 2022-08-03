@@ -109,7 +109,7 @@ def getAllGuestData(request,order_id):
 class crudInviteesAPI(APIView):
     authentication_classes=[JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    def get(self, request, invitee_id, format = None):
+    def get(self, request, invitee_id = None, format = None):
         try:
             if invitee_id is not None:
                 invitee =  Invitee.objects.get(id=invitee_id)
@@ -147,7 +147,7 @@ class crudInviteesAPI(APIView):
             return Response({'msg':str(e)}, status= HTTP_404_NOT_FOUND)
 
 
-    def delete(self, request, invitee_id, format = None):
+    def delete(self, request, invitee_id = None, format = None):
         try:
             if invitee_id is not None:
                 invitee =  Invitee.objects.get(pk=invitee_id)
@@ -164,7 +164,7 @@ class crudInviteesAPI(APIView):
 class crudWisherAPI(APIView):
     authentication_classes=[JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    def get(self, request, wisher_id, format = None):
+    def get(self, request, wisher_id=None, format = None):
         try:
             if wisher_id is not None:
                 wisher =  Wisher.objects.get(id=wisher_id)
@@ -190,7 +190,7 @@ class crudWisherAPI(APIView):
             return Response({'flag':1,'msg':'Successful'}, status = HTTP_201_CREATED)
         return Response(serializer.errors, status = HTTP_400_BAD_REQUEST)
 
-    def put(self, request, wisher_id, format = None):
+    def put(self, request, wisher_id = None, format = None):
         # Partial= True
         try:
             if wisher_id is not None:
@@ -206,7 +206,7 @@ class crudWisherAPI(APIView):
             return Response({'msg':str(e)}, status= HTTP_404_NOT_FOUND)
 
 
-    def delete(self, request, wisher_id, format = None):
+    def delete(self, request, wisher_id = None, format = None):
         try:
             if wisher_id is not None:
                 wisher =  Wisher.objects.get(pk=wisher_id)
