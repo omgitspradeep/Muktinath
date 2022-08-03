@@ -224,8 +224,14 @@ class crudWisherAPI(APIView):
 
 @api_view(['GET']) 
 def getAllOrders(request,user_name):
+    authentication_classes=[JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     items=[]
-    usr = User.objects.get(username=user_name)
+    usr = Customer.objects.get(username=user_name)
+    if usr != request.user:
+        return Response({'flag':6,'msg':'You cannot request this operation.'}, status= HTTP_400_BAD_REQUEST)
+
     if usr is not None:
         user_order = AllOrders.objects.filter(user=usr).values()
         return JsonResponse( list(user_order), safe=False)
