@@ -10,7 +10,7 @@
 
 
 
-<h4 class="mt-5">Select your Order:</h4>
+<h4 class="mt-5" id="dashboard-title">Select your Order:</h4>
 
 <ul class="nav nav-pills nav-fill">
 
@@ -26,15 +26,20 @@
 
 </ul>
 
+{% if orderisnone %}
+  <h2>You have none orders for dashboard.</h2>
+{%else%}
+  {% include 'includes/analytic_plots.html'%}
+{%endif%}     
 
-{% include 'includes/analytic_plots.html'%}
-       
 
- 
+
 {% endblock content %}
+
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+
 {% endblock javascripts %}
 
 <!-- 
