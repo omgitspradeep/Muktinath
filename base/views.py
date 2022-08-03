@@ -290,7 +290,7 @@ class OrderViewset(viewsets.ViewSet):
                 # Send email confirming the Order
                 sendEmail(newlyCreatedOrder, order_for_user)
             
-                return Response({'msg':'Order Created Successfully'}, status= HTTP_201_CREATED)
+                return Response({'flag':1,'msg':'Order Created Successfully'}, status= HTTP_201_CREATED)
             return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
@@ -303,7 +303,7 @@ class OrderViewset(viewsets.ViewSet):
             serializer = AllOrdersSerializer(user_order,data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response({'msg':'Successful'})
+                return Response({'flag':1,'msg':'Successful'})
             return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
@@ -316,9 +316,9 @@ class OrderViewset(viewsets.ViewSet):
             if id is not None:
                 order =  AllOrders.objects.get(id=id)
                 order.delete()
-                return Response({'msg':'Successful'})
+                return Response({'flag':1,'msg':'Successful'})
             else:
-                return Response({'msg':'ID is missing'})
+                return Response({'flag':0,'msg':'ID is missing'})
         except Exception as e:
             return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
 
@@ -376,13 +376,13 @@ class GalleryViewSet(viewsets.ViewSet):
             serializer = MarraigeGalleryDataSerializer(gallery_photo)
             return Response(serializer.data)
         except Exception:
-            return Response({'msg':'No images in Gallery to show.'})
+            return Response({'flag':0,'msg':'No images in Gallery to show.'})
 
     def create(self, request):
         serializer = MarraigeGalleryDataSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'msg':'New Image is saved in Gallery.'}, status= HTTP_201_CREATED)
+            return Response({'flag':1,'msg':'New Image is saved in Gallery.'}, status= HTTP_201_CREATED)
         return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
 
 
@@ -392,22 +392,22 @@ class GalleryViewSet(viewsets.ViewSet):
             serializer = MarraigeGalleryDataSerializer(gallery_photo, data= request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response({'msg':'Image details updated'})
+                return Response({'flag':1,'msg':'Image details updated'})
             return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
         except Exception:
-            return Response({'msg':'No images in Gallery to show.'})
+            return Response({'flag':0,'msg':'No images in Gallery to show.'})
 
     def destroy(self, request, pk):
         if pk is not None:
             try:
                 photo =  Gallery.objects.get(id=pk)
                 photo.delete()
-                return Response({'msg':'Photo deleted successfully'})
+                return Response({'flag':1,'msg':'Photo deleted successfully'})
             except Exception:
-                return Response({'msg':'No images in Gallery to delete.'})
+                return Response({'flag':0,'msg':'No images in Gallery to delete.'})
 
         else:
-            return Response({'msg':'ID is missing'})
+            return Response({'flag':0,'msg':'ID is missing'})
 
 
 
@@ -458,15 +458,15 @@ def UserDataForHisOrders(request, order_id, request_for):
                 return MarriageMeetingPointDataApi(request, main_data)
 
             else:
-                return JsonResponse({'msg':'Bad Request'},safe=False)
+                return JsonResponse({'flag':0,'msg':'Bad Request'},safe=False)
 
         elif(theme_type=='Birthday'):
-            return JsonResponse({'msg':'Congratulations! Birthday'},safe=False)
+            return JsonResponse({'flag':1,'msg':'Congratulations! Birthday'},safe=False)
 
 
 
         else:
-            return JsonResponse({'msg':'Congratulations! Opening'},safe=False)
+            return JsonResponse({'flag':1,'msg':'Congratulations! Opening'},safe=False)
     
     except Exception as e:
             return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
