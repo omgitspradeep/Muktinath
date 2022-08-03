@@ -595,6 +595,10 @@ def home(request):
 @login_required(login_url="accounts/login")
 def dashboard(request,selectedorderid):
     all_orders = AllOrders.objects.filter(user=request.user)
+    
+    if all_orders.count()==0:
+        return render(request, 'dashboard.html', context= {"orderisnone":True})
+        
     if selectedorderid==0:
         selectedorderid=all_orders.first().id
     selected_order= AllOrders.objects.get(id=selectedorderid)
