@@ -250,6 +250,10 @@ class OrderViewset(viewsets.ViewSet):
         try:
             if id is not None:
                 orders = AllOrders.objects.get(id = id)
+                # Check if api request is sent by authentic user.
+                if orders.user != request.user:
+                    return Response({'flag':6,'msg':'You cannot request this operation.'}, status= HTTP_400_BAD_REQUEST)
+                
                 serializer = AllOrdersSerializer(orders,many = False)
                 return Response(serializer.data)
         except Exception as e:
