@@ -254,7 +254,7 @@ KHALTI_VERIFY_URL = "https://khalti.com/api/v2/payment/verify/"
 
 # For OAuth
 
-SITE_ID = 2
+SITE_ID = 1
 LOGIN_REDIRECT_URL = 'home'
 ACCOUNT_LOGOUT_REDIRECT_URL ='account_login'
 
