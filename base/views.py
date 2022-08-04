@@ -183,7 +183,7 @@ class crudWisherAPI(APIView):
         requested_user = request.user
         serializer = WisherSerializer(data = request.data)
         if serializer.is_valid():
-            order_of_user = AllOrders.objects.get(id=serializer.data['order'])
+            order_of_user = AllOrders.objects.get(id=serializer.validated_data['order'].id)
             if requested_user != order_of_user.user:
                 return Response({'flag':6,'msg':'You cannot request this operation.'}, status= HTTP_400_BAD_REQUEST)
             else:
