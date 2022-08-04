@@ -55,14 +55,15 @@ class CustomerLoginView(APIView):
                 token=get_tokens_for_user(user)
                 cust = Customer.objects.get(id=user.id)
                 cust_seri = CustomerProfileSerializer(cust)
-                user_order = AllOrders.objects.filter(user=cust).values()
+                user_order = AllOrders.objects.filter(user=cust)
+                order_seri = AllOrdersSerializer(user_order, many=True)
                 context = {
-                    'flag':1,
-                    'token':token,
-                    "my_orders":user_order,
-                    "my_profile":serializer.data
+                    "flag":1,
+                    "token":token,
+                    "my_profile":cust_seri.data,
+                    "my_orders": order_seri.data
                 }
-                return Response({'flag':1,'token':token}, status= status.HTTP_200_OK)
+                return Response(context, status= status.HTTP_200_OK)
             else:
                 return Response({'flag':0,'errors':{'non_field_errors':['Email or Password is not valid.']}} , status= status.HTTP_404_NOT_FOUND)
             
