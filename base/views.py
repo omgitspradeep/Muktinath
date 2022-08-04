@@ -181,14 +181,15 @@ class crudWisherAPI(APIView):
 
     def post(self, request, format = None):
         requested_user = request.user
-        if request.order.user != requested_user:
-            return Response({'flag':6,'msg':'You cannot request this operation.'}, status= HTTP_400_BAD_REQUEST)
-
         serializer = WisherSerializer(data = request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({'flag':1,'msg':'Successful'}, status = HTTP_201_CREATED)
-        return Response(serializer.errors, status = HTTP_400_BAD_REQUEST)
+            order_of_user = AllOrders.objects.get(id=serializer.data['order'])
+            if requested_user != order_of_user.user:
+                return Response({'flag':6,'msg':'You cannot request this operation.'}, status= HTTP_400_BAD_REQUEST)
+            else:
+                serializer.save()
+                return Response({'flag':1,'msg':'Successful'}, status = HTTP_201_CREATED)
+        return Response({'flag':0, 'msg':serializer.errors}, status = HTTP_400_BAD_REQUEST)
 
     def put(self, request, wisher_id = None, format = None):
         # Partial= True
