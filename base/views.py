@@ -30,10 +30,6 @@ from django.utils import translation
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str 
 
-from Marriage.models import Contact as MContact, MarriageData ,MeetingPoint as MMeetingPoint, Testimonials, Parents,Gallery   
-from Birthday.models import Contact as BDContact, BirthdayData,MeetingPoint as BDMeetingPoint
-
-
 #CUstom 
 
 from . import sampledata
@@ -45,9 +41,11 @@ from .tokens import account_activation_token
 from base.forms import SignupForm, AllThemeOrdersForm, MarriageInviteeForm,BDInviteeForm
 from base.models import AllOrders, Invitee, Wisher,InvitationThemes
 
-from Marriage.models import Contact as MContact, MarriageData ,MeetingPoint as MMeetingPoint, Testimonials, Parents,Gallery   
 from Marriage.serializers import MarraigeDataSerializer, MarriageContactDataSerializer, MarraigeMeetingPointDataSerializer, MarraigeTestimonialsDataSerializer, MarraigeParentsDataSerializer, MarraigeGalleryDataSerializer
+from Marriage.models import Contact as MContact, MarriageData ,MeetingPoint as MMeetingPoint, Testimonials, Parents,Gallery   
 from Birthday.models import Contact as BDContact, BirthdayData,MeetingPoint as BDMeetingPoint
+
+from muktinath.mypaginations import MyPageNumberPagination
 
 from accountapp.models import Customer
 
@@ -91,6 +89,13 @@ class ThemesViewSet(generics.ListAPIView):
     search_fields = ['$theme_name']
 
 
+class ThemesViewSetPag(generics.ListAPIView):
+    queryset = InvitationThemes.objects.all().order_by("id")
+    serializer_class = InvitationThemesSerializer
+    pagination_class = MyPageNumberPagination
+
+
+    
 @api_view(['GET'])
 def getAllGuestData(request,order_id):
 
