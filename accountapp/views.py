@@ -1,12 +1,16 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate
+
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
 
-from base.serializers import AllOrdersSerializer
 from .models import Customer
-
+from base.models import AllOrders
+from base.serializers import AllOrdersSerializer
+from accountapp.renderers import CustomerRenderer
 from accountapp.serializers import (
     CustomerRegistrationSerializer, 
     CustomerLoginSerializer, 
@@ -15,10 +19,8 @@ from accountapp.serializers import (
     SendPasswordRestEmailSerializer,
     CustomerPasswordResetSerializer
     )
-from accountapp.renderers import CustomerRenderer
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import IsAuthenticated
-from base.models import AllOrders
+
+import requests
 
 # Create your views here.
 
@@ -54,16 +56,29 @@ class CustomerLoginView(APIView):
 
             user = authenticate(email = email, password = pwd)
             if user is not None:
+                 #Token
                 token=get_tokens_for_user(user)
+
+                #Profile
                 cust = Customer.objects.get(id=user.id)
                 cust_seri = CustomerProfileSerializer(cust)
+
+                #Orders
                 user_order = AllOrders.objects.filter(user=cust)
                 order_seri = AllOrdersSerializer(user_order, many=True)
+
+                #Themes
+                themes = requests.get("http://"+request.get_host()+reverse('themes_pag'))
+                all_themes = "not avl"
+                if themes.status_code==200:
+                    all_themes = themes.json()
+
                 context = {
                     "flag":1,
                     "token":token,
                     "my_profile":cust_seri.data,
-                    "my_orders": order_seri.data
+                    "my_orders": order_seri.data,
+                    "all_themes": all_themes
                 }
                 return Response(context, status= status.HTTP_200_OK)
             else:
