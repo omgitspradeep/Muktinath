@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate
+from django.urls import reverse
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -56,7 +57,8 @@ class CustomerLoginView(APIView):
 
             user = authenticate(email = email, password = pwd)
             if user is not None:
-                 #Token
+                
+                #Token
                 token=get_tokens_for_user(user)
 
                 #Profile
