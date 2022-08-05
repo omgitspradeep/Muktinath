@@ -48,6 +48,7 @@ urlpatterns = [
 
     #APIs - mobile and web
     path('api/themes/',views.ThemesViewSet.as_view(),name='themes'),  # It works for both home and search i.e. http://127.0.0.1:8000/themes/
+    path('api/pag-themes/',views.ThemesViewSetPag.as_view(),name='themes_pag'),
     path('api/all_guests/<int:order_id>', views.getAllGuestData, name='all_guests'),
     
     #Invitees
