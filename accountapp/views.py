@@ -94,7 +94,7 @@ class CustomerProfileView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
         serializer = CustomerProfileSerializer(request.user)
-        return Response({'flag':1,'data':serializer.data}, status= status.HTTP_200_OK)
+        return Response(serializer.data, status= status.HTTP_200_OK)
 
 
 class UserChangePasswordView(APIView):
