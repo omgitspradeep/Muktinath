@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.urls import reverse
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Customer
@@ -88,6 +89,47 @@ class CustomerLoginView(APIView):
             
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    
+    
+    
+class CustomerLoginViewJWT(APIView):
+    authentication_classes=[JWTAuthentication]
+
+    def post(self, request, format=None):
+
+        try:
+            token = request.POST.get('token')
+            access_token = AccessToken(token)
+
+            customer = Customer.objects.get(id = access_token['user_id'])
+
+            #Profile
+            cust_seri = CustomerProfileSerializer(customer)
+        
+            #Orders
+            user_order = AllOrders.objects.filter(user=customer)
+            order_seri = AllOrdersSerializer(user_order, many=True)
+        
+            #Themes
+            themes = requests.get("http://"+request.get_host()+reverse('themes_pag'))
+            all_themes = "not avl"
+            if themes.status_code==200:
+                all_themes = themes.json()
+            context = {
+                "flag":1,
+                "my_profile":cust_seri.data,
+                "my_orders": order_seri.data,
+                "all_themes": all_themes
+            }
+            return Response(context, status= status.HTTP_200_OK)
+        except Exception as e:
+            context = {"flag":0,"msg": e}
+            return Response(context, status= status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    
+    
+    
+    
 
 class CustomerProfileView(APIView):
     renderer_classes = [CustomerRenderer]
