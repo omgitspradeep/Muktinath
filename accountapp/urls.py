@@ -3,6 +3,7 @@ from django.urls import path,include
 from accountapp.views import (
     CustomerRegistrationView, 
     CustomerLoginView, 
+    CustomerLoginViewJWT,
     CustomerProfileView,
     UserChangePasswordView,
     SendPasswordResetEmailView,
@@ -14,6 +15,7 @@ from accountapp.views import (
 urlpatterns = [
     path('register/', CustomerRegistrationView.as_view(), name='register'),
     path('login/', CustomerLoginView.as_view(), name='login'),
+    path('loginjwt/',CustomerLoginViewJWT.as_view(), name = 'login_jwt'),
     path('profile/', CustomerProfileView.as_view(), name='profile'),
     path('change-password/', UserChangePasswordView.as_view(), name='change_password'),
     path('send-reset-password-email/', SendPasswordResetEmailView.as_view(), name='send_reset_email'),
