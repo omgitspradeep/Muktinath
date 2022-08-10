@@ -93,7 +93,7 @@ class CustomerLoginView(APIView):
     
     
 class CustomerLoginViewJWT(APIView):
-    #authentication_classes=[JWTAuthentication]
+    authentication_classes=[JWTAuthentication]
 
     def post(self, request, format=None):
 
