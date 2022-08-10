@@ -105,25 +105,32 @@ class CustomerLoginViewJWT(APIView):
 
             #Profile
             cust_seri = CustomerProfileSerializer(customer)
-        
+            print("111111111111")
+    
             #Orders
             user_order = AllOrders.objects.filter(user=customer)
             order_seri = AllOrdersSerializer(user_order, many=True)
-        
+            print("222222222222")
+
             #Themes
             themes = requests.get("http://"+request.get_host()+reverse('themes_pag'))
             all_themes = "not avl"
             if themes.status_code==200:
+                print("33333333333")
                 all_themes = themes.json()
+            print("4444444444444")
+
             context = {
                 "flag":1,
                 "my_profile":cust_seri.data,
                 "my_orders": order_seri.data,
                 "all_themes": all_themes
             }
+            print("555555555555")
             return Response(context, status= status.HTTP_200_OK)
         except Exception as e:
             context = {"flag":0,"msg": e}
+            print("666666666666666")
             return Response(context, status= status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     
