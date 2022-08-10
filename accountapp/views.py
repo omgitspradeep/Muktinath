@@ -101,11 +101,14 @@ class CustomerLoginViewJWT(APIView):
             print("000000000000")
             token = request.POST.get('token')
             print("111110000000")
-            access_token = AccessToken(token)
+            access_token_obj = AccessToken(token)
             print("0000000222222")
+            customer_id=access_token_obj['user_id']
+            print("0000000111111")
 
-            customer = Customer.objects.get(id = access_token['user_id'])
+            customer = Customer.objects.filter(id = customer_id).first()
             print("00000033333333")
+            print(customer.email + "------------"+customer.address)
 
             #Profile
             cust_seri = CustomerProfileSerializer(customer)
