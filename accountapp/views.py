@@ -90,55 +90,46 @@ class CustomerLoginView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     
-    
-    
+  
+
+
+
 class CustomerLoginViewJWT(APIView):
     authentication_classes=[JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
-    def post(self, request, format=None):
-
+    def get(self, request):
         try:
-            print("000000000000")
-            token = request.POST.get('token')
-            print("111110000000")
-            access_token_obj = AccessToken(token)
-            print("0000000222222")
-            customer_id=access_token_obj['user_id']
-            print("0000000111111")
+            user = request.user
+            if user.is_authenticated:
 
-            customer = Customer.objects.filter(id = customer_id).first()
-            print("00000033333333")
-            print(customer.email + "------------"+customer.address)
+                #Profile
+                customer = Customer.objects.get(id = user.id)   
+                cust_seri = CustomerProfileSerializer(customer)
 
-            #Profile
-            cust_seri = CustomerProfileSerializer(customer)
-            print("111111111111")
-    
-            #Orders
-            user_order = AllOrders.objects.filter(user=customer)
-            order_seri = AllOrdersSerializer(user_order, many=True)
-            print("222222222222")
+                #Orders
+                user_order = AllOrders.objects.filter(user=customer)
+                order_seri = AllOrdersSerializer(user_order, many=True)
 
-            #Themes
-            themes = requests.get("http://"+request.get_host()+reverse('themes_pag'))
-            all_themes = "not avl"
-            if themes.status_code==200:
-                print("33333333333")
-                all_themes = themes.json()
-            print("4444444444444")
+                #Themes
+                themes = requests.get("http://"+request.get_host()+reverse('themes_pag'))
+                all_themes = "not avl"
+                if themes.status_code==200:
+                    all_themes = themes.json()
+                context = {
+                    "flag":1,
+                    "my_profile":cust_seri.data,
+                    "my_orders": order_seri.data,
+                    "all_themes": all_themes
+                }
+                return Response(context, status= status.HTTP_200_OK)
+            else:
+                return Response({"flag":0, "msg":"User not authenticated"}, status= status.HTTP_401_UNAUTHORIZED)
 
-            context = {
-                "flag":1,
-                "my_profile":cust_seri.data,
-                "my_orders": order_seri.data,
-                "all_themes": all_themes
-            }
-            print("555555555555")
-            return Response(context, status= status.HTTP_200_OK)
         except Exception as e:
             context = {"flag":0,"msg": e}
-            print("666666666666666")
             return Response(context, status= status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     
     
