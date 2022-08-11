@@ -94,6 +94,15 @@ class ThemesViewSetPag(generics.ListAPIView):
     serializer_class = InvitationThemesSerializer
     pagination_class = MyPageNumberPagination
 
+    
+#Temporary
+def sampleAPI(request, themeid,theme_name):
+    theme_selected= InvitationThemes.objects.get(id=themeid)
+    template_to_render= theme_selected.sample_page_location
+    if(theme_selected.theme_type=="Marriage"):
+        return render(request, template_to_render,context={"theme_name":theme_name,"wishes": sampledata.wishes,"data":sampledata.data, "contact":sampledata.contact,"aboutus":sampledata.aboutus, "parents":sampledata.parents, "meetingPoint":sampledata.meetingPoint,"testi":sampledata.testimonials, "gallery":sampledata.gallery, "inviteeObj":sampledata.inviteeObj})
+    else:
+        return render(request,template_to_render,context={'title':theme_name, 'msg':'Happy Birthday dear'})
 
     
 @api_view(['GET'])
