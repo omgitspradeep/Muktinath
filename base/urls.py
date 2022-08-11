@@ -67,6 +67,10 @@ urlpatterns = [
     path('api/data/<int:order_id>/<str:request_for>/',views.UserDataForHisOrders, name = 'datas'),
     path('api/data/',views.UserDataForHisOrders, name = 'datas'),
     
+    #Temporary
+    path('sampleapi/<int:themeid>/<str:theme_name>', views.sampleAPI, name='sample_api'),
+
+    
 
 
 
