@@ -541,6 +541,13 @@ def sample(request, themeid,theme_name):
     else:
         return render(request,template_to_render,context={'title':theme_name, 'msg':'Happy Birthday dear'})
 
+@api_view(['GET']) 
+def viewAsAPI(request, order_id):
+    authentication_classes=[JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    return getDataAndDisplay(request, order_id);
+
 
 
 def add_order(request):
@@ -1012,52 +1019,9 @@ def wishCD(request):
 
 
 # We need to authenticate wheter order id belongs to User who sends request for viewAs
-# option: 1-> viewas , 2-> download
 @login_required(login_url='login')
 def viewAs(request, order_id):
-
-    user =request.user
-    #check if user is ligit for viewas request i.e user is requesting for his own order's view
-    ordered_invitation = AllOrders.objects.get(id=order_id)
-    invitation_type = ordered_invitation.selected_theme.theme_type
-
-
-    if(ordered_invitation.user == user):
-        print("User is ligit")
-        if(invitation_type == "Marriage"):
-            # check if it is for view or download
-            print("Inside View")
-            data = MarriageData.objects.get(marriage_order=ordered_invitation) #4
-            contact = MContact.objects.get(marriage_data=data)
-            testimonials = Testimonials.objects.get(marriage_data=data)
-            parents = Parents.objects.get(marriage_data=data)
-            meetingPoint = MMeetingPoint.objects.get(marriage_data=data)
-            gallery = Gallery.objects.filter(marriage_data=data)        
-            wishes = Wisher.objects.filter(order=ordered_invitation) #5
-            template_to_render = data.marriage_order.selected_theme.theme_link  #6
-            # Do not show wishing form
-            if len(wishes) == 0:
-                return render(request, template_to_render,context={"alreadyWished":1, "data":data, "contact":contact, "parents":parents, "meetingPoint":meetingPoint, "testi":testimonials, "gallery":gallery })        
-            return render(request, template_to_render,context={"wishes": wishes,"alreadyWished":1,"data":data, "contact":contact, "parents":parents, "meetingPoint":meetingPoint,"testi":testimonials, "gallery":gallery})
-
-        
-        elif (invitation_type == "Birthday"):
-
-            print("Inside View")
-            template_to_render = ordered_invitation.selected_theme.theme_link  
-            print(template_to_render)               
-            return render(request, template_to_render,context={})
-
-        elif (invitation_type == "Opening"):
-            return HttpResponse("This is opening theme sample")
-   
-        else:
-            return HttpResponse("Nothing")
-
-    else:
-        # Display page not found here...
-        print("Requested marriage order is not of user's... ")
-
+    return getDataAndDisplay(request, order_id);
 
 
 # Not used for now since we 
@@ -1297,4 +1261,53 @@ def MarriageMeetingPointDataApi(request, main_data):
         return Response({'msg':'Congratulations! MeetingPoint Successfully updated'})
     else:
         return Response({'msg':'Not Allowed'})
+
+ 
+
+
+
+def getDataAndDisplay(request, order_id):
+    user =request.user
+    ordered_invitation = AllOrders.objects.get(id=order_id)
+    invitation_type = ordered_invitation.selected_theme.theme_type
+    
+    #check if user is ligit for viewas request i.e user is requesting for his own order's view
+
+    if(ordered_invitation.user == user):
+        print("User is ligit")
+        if(invitation_type == "Marriage"):
+            # check if it is for view or download
+            print("Inside View")
+            data = MarriageData.objects.get(marriage_order=ordered_invitation) #4
+            contact = MContact.objects.get(marriage_data=data)
+            testimonials = Testimonials.objects.get(marriage_data=data)
+            parents = Parents.objects.get(marriage_data=data)
+            meetingPoint = MMeetingPoint.objects.get(marriage_data=data)
+            gallery = Gallery.objects.filter(marriage_data=data)        
+            wishes = Wisher.objects.filter(order=ordered_invitation) #5
+            template_to_render = data.marriage_order.selected_theme.theme_link  #6
+            # Do not show wishing form
+            if len(wishes) == 0:
+                return render(request, template_to_render,context={"alreadyWished":1, "data":data, "contact":contact, "parents":parents, "meetingPoint":meetingPoint, "testi":testimonials, "gallery":gallery })        
+            return render(request, template_to_render,context={"wishes": wishes,"alreadyWished":1,"data":data, "contact":contact, "parents":parents, "meetingPoint":meetingPoint,"testi":testimonials, "gallery":gallery})
+
+        
+        elif (invitation_type == "Birthday"):
+
+            print("Inside View")
+            template_to_render = ordered_invitation.selected_theme.theme_link  
+            print(template_to_render)               
+            return render(request, template_to_render,context={})
+
+        elif (invitation_type == "Opening"):
+            return HttpResponse("This is opening theme sample")
+   
+        else:
+            return HttpResponse("Nothing")
+
+    else:
+        # Display page not found here...
+        print("Requested marriage order is not of user's... ")
+        return HttpResponse("Operation not allowed.")
+
 
