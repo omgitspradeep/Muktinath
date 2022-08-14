@@ -28,6 +28,17 @@
   </div>
 
 
+  {% if request.user.is_admin %}
+
+      <a href="{{ request.scheme }}://{{ request.get_host }}/admin" class="nav-link">
+        <button class="btn btn-gray-800 secondaryAction">{% trans 'Admin panel' %}</button>
+      </a>
+      
+  {% endif %}
+
+
+
+
   <h1 style="text-align: center;"> Here Profile is shown with setting available.</h1>
 
   <h1> Profile Page</h1>
@@ -49,6 +60,8 @@
     <button class="btn btn-gray-800 secondaryAction">{% trans 'Change E-mail' %}</button>
   </a>
   
+
+
   
 
 {% endblock content %}

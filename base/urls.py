@@ -26,7 +26,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
 
 
-    #path('logout/',views.logout, name='logout'),
+    path('logout/',views.logout, name='logout'),
     path('profile/',views.profile, name='profile'),
     path('add-order/',views.add_order, name='add-order'),
     path('orders/nimto/<int:order_id>', views.nimto, name='nimto'),
