@@ -496,6 +496,13 @@ def UserDataForHisOrders(request, order_id, request_for):
 
 
 
+@api_view(['GET']) 
+def viewAsAPI(request, order_id):
+    authentication_classes=[JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    return getDataAndDisplay(request, order_id)
+
 
 
 
@@ -541,12 +548,6 @@ def sample(request, themeid,theme_name):
     else:
         return render(request,template_to_render,context={'title':theme_name, 'msg':'Happy Birthday dear'})
 
-@api_view(['GET']) 
-def viewAsAPI(request, order_id):
-    authentication_classes=[JWTAuthentication]
-    permission_classes = [IsAuthenticated]
-    
-    return getDataAndDisplay(request, order_id);
 
 
 
