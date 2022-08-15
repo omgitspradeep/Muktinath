@@ -114,10 +114,11 @@ def getAllGuestData(request,order_id):
 
     for g in guests:
         guestWish = g.getWishIfExists()
-        items.append({'id':g.id,'name': g.name,'visited':g.is_invitation_viewed,'address':g.address, 'url':g.URL(),'message':g.invitee_message,'status':g.inviteStatus,'wish':guestWish})
+        items.append({'id':g.id, 'order': user_order.id, 'name': g.name, 'gender': g.gender, 'address':g.address, 'inviteStatus':g.inviteStatus, 'invitee_message':g.invitee_message, 'is_invitation_viewed':g.is_invitation_viewed, 'url':g.URL(),'wish':guestWish})
     
     print(items)
     return JsonResponse(items,safe=False)
+
 
 
 class crudInviteesAPI(APIView):
