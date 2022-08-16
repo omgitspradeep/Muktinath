@@ -113,11 +113,47 @@ def getAllGuestData(request,order_id):
     guests = Invitee.objects.filter(order=user_order)
 
     for g in guests:
-        guestWish = g.getWishIfExists()
-        items.append({'id':g.id, 'order': user_order.id, 'name': g.name, 'gender': g.gender, 'address':g.address, 'inviteStatus':g.inviteStatus, 'invitee_message':g.invitee_message, 'is_invitation_viewed':g.is_invitation_viewed, 'url':g.URL(),'wish':guestWish})
-    
-    print(items)
+        guestWishObject = g.getWishIfExists()
+        if(guestWishObject!=""):
+            items.append({'id':g.id, 'order': user_order.id, 'name': g.name, 'gender': g.gender, 'address':g.address, 'inviteStatus':g.inviteStatus, 'invitee_message':g.invitee_message, 'is_invitation_viewed':g.is_invitation_viewed, 'url':g.URL(),'wish':guestWishObject.wishes, 'wishId':guestWishObject.id, 'wishPosted':guestWishObject.posted})
+        else:
+            items.append({'id':g.id, 'order': user_order.id, 'name': g.name, 'gender': g.gender, 'address':g.address, 'inviteStatus':g.inviteStatus, 'invitee_message':g.invitee_message, 'is_invitation_viewed':g.is_invitation_viewed, 'url':g.URL(),'wish':'', 'wishId':0, 'wishPosted':''})
+
     return JsonResponse(items,safe=False)
+
+
+
+'''
+
+            try:
+                order_id = serializer.data['order']
+                reverseUrl= "http://"+request.get_host()+reverse('all_guests', args=[order_id])
+                print(reverseUrl)
+                guests = requests.get(reverseUrl)
+                all_guests = "not avl"
+                if guests.status_code == 200:
+                    all_guests = guests.json() 
+                else:
+                    return JsonResponse({"flag":0,"msg": "Something went wrong while fetching All guests!"},status=HTTP_404_NOT_FOUND)
+            except:
+                return JsonResponse({"flag":0,"msg": "Something went wrong while fetching All guests!"},status=HTTP_400_BAD_REQUEST)
+
+'''
+
+
+def getGuestDataAfterInviteeCreateOrUpdate(request,order_id):
+    try:
+        reverseUrl= "http://"+request.get_host()+reverse('all_guests', args=[order_id])
+        print(reverseUrl)
+        guests = requests.get(reverseUrl)
+        all_guests = "not avl"
+        if guests.status_code == 200:
+            all_guests = guests.json() 
+            return all_guests
+        else:
+            return ""
+    except:
+        return ""
 
 
 
@@ -132,11 +168,11 @@ class crudInviteesAPI(APIView):
                 #if invitee.order.user != requested_user:
                 #    return Response({'flag':6,'msg':'You cannot request this operation.'}, status= HTTP_400_BAD_REQUEST)
 
-                serializer = InviteeSerializer(invitee)
+                serializer = InviteeSerializer(invitee, status=HTTP_200_OK)
                 return Response(serializer.data)
             invitees =  Invitee.objects.all()
             serializer = InviteeSerializer(invitees, many=True)
-            return Response(serializer.data)
+            return Response(serializer.data, status=HTTP_200_OK)
 
         except Exception as e:
             return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
@@ -146,8 +182,15 @@ class crudInviteesAPI(APIView):
         serializer = InviteeSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'flag':1,'msg':'Successful'}, status = HTTP_201_CREATED)
+
+            order_id = serializer.data['order']
+            all_guests= getGuestDataAfterInviteeCreateOrUpdate(request, order_id)
+            if(all_guests!= ""):
+                return Response(all_guests, status=HTTP_200_OK)
+            else:
+                return Response({'flag':0,'msg':'New invitee is created. But, Failed while getting all invitees. Server issue.'},status=HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status = HTTP_400_BAD_REQUEST)
+
 
     def put(self, request, invitee_id, format = None):
         # Partial= True
@@ -157,7 +200,17 @@ class crudInviteesAPI(APIView):
                 serializer = InviteeSerializer(invitee,data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
-                    return Response({'flag':1,'msg':'Successful'})
+
+                order_id = serializer.data['order']
+                all_guests= getGuestDataAfterInviteeCreateOrUpdate(request, order_id)
+                if(all_guests!= ""):
+                    return Response(all_guests, status=HTTP_200_OK)
+                else:
+                    return Response({'flag':0,'msg':'New invitee is created. But, Failed while getting all invitees. Server issue.'},status=HTTP_400_BAD_REQUEST)
+
+            else:
+                return Response({'flag':0,'msg':'Provided invitee is not valid'},status=HTTP_400_BAD_REQUEST)
+
         except Exception as e:
             return Response({'msg':str(e)}, status= HTTP_404_NOT_FOUND)
 
@@ -166,14 +219,21 @@ class crudInviteesAPI(APIView):
         try:
             if invitee_id is not None:
                 invitee =  Invitee.objects.get(pk=invitee_id)
+                order_id= invitee.order.id
+                print(order_id,"--------------------------------------")
                 invitee.delete()
-                return Response({'flag':1,'msg':'Successful'})
+
+                all_guests= getGuestDataAfterInviteeCreateOrUpdate(request, order_id)
+                if(all_guests!= ""):
+                    return Response(all_guests, status=HTTP_200_OK)
+                else:
+                    return Response({'flag':0,'msg':'invitee is deleted. But, Failed while getting all invitees. Server issue.'},status=HTTP_400_BAD_REQUEST)
+
             else:
-                return Response({'flag':2,'msg':'ID is missing'})
+                return Response({'flag':2,'msg':'ID is missing'},status=HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
-
-
+    
 
 
 class crudWisherAPI(APIView):
@@ -189,7 +249,7 @@ class crudWisherAPI(APIView):
 
                 serializer = WisherSerializer(wisher)
                 return Response(serializer.data)
-            return Response({'flag':2,'msg':'All data unavailable now'})
+            return Response({'flag':2,'msg':'All data unavailable now'}, status=HTTP_200_OK)
         except Exception as e:
             return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
 
@@ -203,7 +263,14 @@ class crudWisherAPI(APIView):
                 return Response({'flag':6,'msg':'You cannot request this operation.'}, status= HTTP_400_BAD_REQUEST)
             else:
                 serializer.save()
-                return Response({'flag':1,'msg':'Successful'}, status = HTTP_201_CREATED)
+
+                order_id = serializer.data['order']
+                all_guests= getGuestDataAfterInviteeCreateOrUpdate(request, order_id)
+                if(all_guests!= ""):
+                    return Response(all_guests, status=HTTP_200_OK)
+                else:
+                    return Response({'flag':0,'msg':'New Wish is created. But, Failed while getting all invitees. Server issue.'},status=HTTP_400_BAD_REQUEST)
+
         return Response({'flag':0, 'msg':serializer.errors}, status = HTTP_400_BAD_REQUEST)
 
     def put(self, request, wisher_id = None, format = None):
@@ -217,7 +284,14 @@ class crudWisherAPI(APIView):
                 serializer = WisherSerializer(wisher,data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
-                    return Response({'flag':1,'msg':'Successful'})
+
+                    order_id = serializer.data['order']
+                    all_guests= getGuestDataAfterInviteeCreateOrUpdate(request, order_id)
+                    if(all_guests!= ""):
+                        return Response(all_guests, status=HTTP_200_OK)
+                    else:
+                        return Response({'flag':0,'msg':'Wish is updated. But, Failed while getting all invitees. Server issue.'},status=HTTP_400_BAD_REQUEST)
+
         except Exception as e:
             return Response({'msg':str(e)}, status= HTTP_404_NOT_FOUND)
 
@@ -228,10 +302,17 @@ class crudWisherAPI(APIView):
                 wisher =  Wisher.objects.get(pk=wisher_id)
                 if wisher.order.user != request.user:
                     return Response({'flag':6,'msg':'You cannot request this operation.'}, status= HTTP_400_BAD_REQUEST)
+
+                order_id = wisher.order.id
                 wisher.delete()
-                return Response({'flag':1,'msg':'Successful'})
+                all_guests= getGuestDataAfterInviteeCreateOrUpdate(request, order_id)
+                if(all_guests!= ""):
+                    return Response(all_guests, status=HTTP_200_OK)
+                else:
+                    return Response({'flag':0,'msg':'New Wish is created. But, Failed while getting all invitees. Server issue.'},status=HTTP_400_BAD_REQUEST)
+
             else:
-                return Response({'flag':2,'msg':'ID is missing'})
+                return Response({'flag':2,'msg':'ID is missing'},status=HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'msg':str(e)}, status= HTTP_404_NOT_FOUND)
 
@@ -404,7 +485,7 @@ class GalleryViewSet(viewsets.ViewSet):
         serializer = MarraigeGalleryDataSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'flag':1,'msg':'New Image is saved in Gallery.'}, status= HTTP_201_CREATED)
+            return Response({'flag':1,'msg':'New Image is saved in Gallery.'}, status= HTTP_200_OK)
         return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
 
 
@@ -414,22 +495,22 @@ class GalleryViewSet(viewsets.ViewSet):
             serializer = MarraigeGalleryDataSerializer(gallery_photo, data= request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response({'flag':1,'msg':'Image details updated'})
+                return Response({'flag':1,'msg':'Image details updated'}, status= HTTP_200_OK)
             return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
         except Exception:
-            return Response({'flag':0,'msg':'No images in Gallery to show.'})
+            return Response({'flag':0,'msg':'No images in Gallery to show.'}, status= HTTP_404_NOT_FOUND)
 
     def destroy(self, request, pk):
         if pk is not None:
             try:
                 photo =  Gallery.objects.get(id=pk)
                 photo.delete()
-                return Response({'flag':1,'msg':'Photo deleted successfully'})
+                return Response({'flag':1,'msg':'Photo deleted successfully'}, status= HTTP_200_OK)
             except Exception:
-                return Response({'flag':0,'msg':'No images in Gallery to delete.'})
+                return Response({'flag':0,'msg':'No images in Gallery to delete.'}, status= HTTP_400_BAD_REQUEST)
 
         else:
-            return Response({'flag':0,'msg':'ID is missing'})
+            return Response({'flag':0,'msg':'ID is missing'}, status= HTTP_400_BAD_REQUEST)
 
 
 

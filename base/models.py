@@ -189,7 +189,7 @@ class Invitee(models.Model):
     def getWishIfExists(self):
         wish = Wisher.objects.filter(invitee=self)
         if(wish.exists()):
-            return wish[0].wishes
+            return wish[0]
         else: 
             return ""
 
