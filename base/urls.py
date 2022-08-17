@@ -11,6 +11,7 @@ router.register('mgalleryapi',views.GalleryViewSet, basename='mgalleryapi') # fo
 
 
 urlpatterns = [
+    path('zoke', views.mytest, name = 'mytest'),
     path('',views.home, name='home'),
     path('dashboard/<int:selectedorderid>',views.dashboard, name='dashboard'),
     path('orders/',views.myorders, name='orders'),

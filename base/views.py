@@ -613,6 +613,21 @@ def viewAsAPI(request, order_id):
 
 
 #Web
+
+def mytest(request):
+    print("-------------------------------")
+    print("IP REQUEST IS HIT")
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    print("IP ADDRESS", ip)
+    return render(request, 'zoke.html',context={"ip":ip})
+
+
+
+
 @login_required(login_url='accounts/login')
 def myorders(request):
     form = AllThemeOrdersForm()
