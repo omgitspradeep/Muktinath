@@ -1,4 +1,5 @@
 #Prebuilt
+from telnetlib import STATUS
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse, JsonResponse,HttpResponseRedirect
 from django.urls import reverse
@@ -537,7 +538,9 @@ def UserDataForHisOrders(request, order_id, request_for):
             main_data= MarriageData.objects.get(marriage_order=user_order)
 
             # Main Marriage Data
-            if (request_for=="marriage_main_data"):
+            if(request_for=="marriage_all_data"):
+                return MarriageAllDataApi(request, main_data)
+            elif (request_for=="marriage_main_data"):
                 return MarriageMainDataApi(request, main_data)
 
             # Marriage Contact Data
@@ -1268,6 +1271,47 @@ def payment(request, theme_id):
 
 
 # USEFUL METHODS
+@csrf_exempt
+def MarriageAllDataApi(request, main_data):
+    if request.method == 'GET':
+        try:
+            # MainData
+            mainDataSerializer = MarraigeDataSerializer(main_data)
+
+            #Contact
+            contactDetail = MContact.objects.get(marriage_data=main_data)
+            contactSerializer = MarriageContactDataSerializer(contactDetail)
+
+            #Testimonials
+            testi = Testimonials.objects.get(marriage_data=main_data)
+            testimonialSerializer = MarraigeTestimonialsDataSerializer(testi)
+
+            #Gallery
+            gallery = Gallery.objects.filter(marriage_data=main_data.id)
+            gallerySerializer = MarraigeGalleryDataSerializer(gallery, many= True)
+
+            #Parents
+            parents = Parents.objects.get(marriage_data=main_data)
+            parentsSerializer = MarraigeParentsDataSerializer(parents)
+
+            #MeetingPoint
+            location = MMeetingPoint.objects.get(marriage_data=main_data)
+            locationSerializer = MarraigeMeetingPointDataSerializer(location)
+
+            return Response({
+                'main_data':mainDataSerializer.data,
+                'contact':contactSerializer.data,
+                'galleries':gallerySerializer.data,
+                'meetingpoint':locationSerializer.data,
+                'parents':parentsSerializer.data,
+                'testimonials':testimonialSerializer.data,
+            }, status= HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
+    else:
+        return Response({'flag':0,'msg':'This operation not allowed'}, status= HTTP_404_NOT_FOUND)
+
 
 @csrf_exempt
 def MarriageMainDataApi(request, marriage_data):
@@ -1332,12 +1376,12 @@ def MarriageGalleryApi(request, main_data):
 
 @csrf_exempt
 def MarriageParentsDataApi(request, main_data):
-    testi = Parents.objects.get(marriage_data=main_data)
+    parents = Parents.objects.get(marriage_data=main_data)
     if request.method == 'GET':
-        serializer = MarraigeParentsDataSerializer(testi)
+        serializer = MarraigeParentsDataSerializer(parents)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = MarraigeParentsDataSerializer(testi, data =request.data, partial=True)
+        serializer = MarraigeParentsDataSerializer(parents, data =request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
         return Response({'msg':'Congratulations! Parents Successfully updated'})
