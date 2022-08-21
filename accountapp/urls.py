@@ -17,6 +17,7 @@ urlpatterns = [
     path('login/', CustomerLoginView.as_view(), name='login'),
     path('loginjwt/',CustomerLoginViewJWT.as_view(), name = 'login_jwt'),
     path('profile/', CustomerProfileView.as_view(), name='profile'),
+    path('profile/<int:user_id>/', CustomerProfileView.as_view(), name='profile_update'),
     path('change-password/', UserChangePasswordView.as_view(), name='change_password'),
     path('send-reset-password-email/', SendPasswordResetEmailView.as_view(), name='send_reset_email'),
     path('reset-password/<uid>/<token>', CustomerPasswordResetView.as_view(), name='reset_password'),

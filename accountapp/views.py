@@ -1,3 +1,4 @@
+from functools import partial
 from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.urls import reverse
@@ -11,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import Customer
 from base.models import AllOrders
-from base.serializers import AllOrdersSerializer
+from base.serializers import AllOrdersSerializer, CustomerSerializer
 from accountapp.renderers import CustomerRenderer
 from accountapp.serializers import (
     CustomerRegistrationSerializer, 
@@ -139,9 +140,31 @@ class CustomerLoginViewJWT(APIView):
 class CustomerProfileView(APIView):
     renderer_classes = [CustomerRenderer]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, format=None):
         serializer = CustomerProfileSerializer(request.user)
         return Response(serializer.data, status= status.HTTP_200_OK)
+
+    def put(self, request, user_id,format = None):
+        # Partial= True
+        requested_user = request.user
+        serializer = CustomerProfileSerializer(requested_user ,data = request.data, partial=True)
+
+        if serializer.is_valid():
+            print("Serializer is valid")
+            profile_of_customer = Customer.objects.get(id = user_id)
+            
+            if requested_user != profile_of_customer:
+                return Response({'msg':'You cannot request this operation.'}, status= status.HTTP_400_BAD_REQUEST)
+            else:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            
+        else:
+            return Response({'msg': 'Some data sent are invalid'}, status= status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
 class UserChangePasswordView(APIView):

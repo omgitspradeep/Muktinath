@@ -249,7 +249,7 @@ class crudWisherAPI(APIView):
                     return Response({'flag':6,'msg':'You cannot request this operation.'}, status= HTTP_400_BAD_REQUEST)
 
                 serializer = WisherSerializer(wisher)
-                return Response(serializer.data)
+                return Response(serializer.data, status=HTTP_200_OK)
             return Response({'flag':2,'msg':'All data unavailable now'}, status=HTTP_200_OK)
         except Exception as e:
             return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
