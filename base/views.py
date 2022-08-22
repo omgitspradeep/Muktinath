@@ -1322,11 +1322,11 @@ def MarriageMainDataApi(request, marriage_data):
         serializer = MarraigeDataSerializer(marriage_data, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({'msg':'Congrtulations! Main data Successfully updated'})
+            return Response(serializer.data, status= HTTP_200_OK)
         else:
-            return Response({'msg':'Sorry! Try again '})
+            return Response({'msg':'Sorry! Try again '}, status= HTTP_404_NOT_FOUND)
     else:
-        return Response({'msg':'Not Allowed'})
+        return Response({'msg':'Not Allowed'}, status=HTTP_400_BAD_REQUEST)
 
 
 @csrf_exempt
@@ -1334,14 +1334,17 @@ def MarriageContactDataApi(request, main_data):
     contact_detail = MContact.objects.get(marriage_data=main_data)
     if request.method == 'GET':
         serializer = MarriageContactDataSerializer(contact_detail)
-        return Response(serializer.data)
+        return Response(serializer.data, status= HTTP_200_OK)
     elif request.method == 'PUT':
         serializer = MarriageContactDataSerializer(contact_detail, data =request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-        return Response({'msg':'Congrtulations! Contact Successfully updated'})
+            return Response( serializer.data, status= HTTP_200_OK)
+        else:
+            return Response({'msg':'Sorry! Try again '}, status= HTTP_404_NOT_FOUND)
+ 
     else:
-        return Response({'msg':'Not Allowed'})
+        return Response({'msg':'This operation is not allowed'}, status=HTTP_400_BAD_REQUEST)
 
 
 @csrf_exempt
@@ -1349,14 +1352,17 @@ def MarriageTestimonialsDataApi(request, main_data):
     testi = Testimonials.objects.get(marriage_data=main_data)
     if request.method == 'GET':
         serializer = MarraigeTestimonialsDataSerializer(testi)
-        return Response(serializer.data)
+        return Response(serializer.data, status= HTTP_200_OK)
     elif request.method == 'PUT':
         serializer = MarraigeTestimonialsDataSerializer(testi, data =request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-        return Response({'msg':'Congrtulations! Testimonial Successfully updated'})
+            return Response( serializer.data, status= HTTP_200_OK)
+        else:
+            return Response({'msg':'Sorry! Try again '}, status= HTTP_404_NOT_FOUND)
+     
     else:
-        return Response({'msg':'Not Allowed'})
+        return Response({'msg':'This operation is not allowed'}, status=HTTP_400_BAD_REQUEST)
 
 
 @csrf_exempt
@@ -1367,11 +1373,11 @@ def MarriageGalleryApi(request, main_data):
         if request.method == 'GET':
             print("Hello world")
             serializer = MarraigeGalleryDataSerializer(gallery, many= True)
-            return Response(serializer.data)
+            return Response( serializer.data, status= HTTP_200_OK)
         else:
-            return Response({'msg':'Not Allowed'})
+            return Response({'msg':'Not Allowed'}, status= HTTP_400_BAD_REQUEST)
     except Exception:
-            return Response({'msg':'No images in Gallery to show.Or Given order does not exitst.'})
+            return Response({'msg':'No images in Gallery to show.Or Given order does not exitst.'}, status= HTTP_404_NOT_FOUND)
 
 
 @csrf_exempt
@@ -1379,14 +1385,17 @@ def MarriageParentsDataApi(request, main_data):
     parents = Parents.objects.get(marriage_data=main_data)
     if request.method == 'GET':
         serializer = MarraigeParentsDataSerializer(parents)
-        return Response(serializer.data)
+        return Response( serializer.data, status= HTTP_200_OK)
     elif request.method == 'PUT':
         serializer = MarraigeParentsDataSerializer(parents, data =request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-        return Response({'msg':'Congratulations! Parents Successfully updated'})
+            return Response( serializer.data, status= HTTP_200_OK)
+        else:
+            return Response({'msg':'Sorry! Try again '}, status= HTTP_404_NOT_FOUND)
+     
     else:
-        return Response({'msg':'Not Allowed'})
+        return Response({'msg':'This operation is not allowed'}, status=HTTP_400_BAD_REQUEST)
 
 
 
@@ -1400,9 +1409,11 @@ def MarriageMeetingPointDataApi(request, main_data):
         serializer = MarraigeMeetingPointDataSerializer(location, data =request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-        return Response({'msg':'Congratulations! MeetingPoint Successfully updated'})
+            return Response( serializer.data, status= HTTP_200_OK)
+        else:
+            return Response({'msg':'Sorry! Try again '}, status= HTTP_404_NOT_FOUND)
     else:
-        return Response({'msg':'Not Allowed'})
+        return Response({'msg':'This operation is not allowed'}, status=HTTP_400_BAD_REQUEST)
 
  
 
@@ -1430,8 +1441,8 @@ def getDataAndDisplay(request, order_id):
             template_to_render = data.marriage_order.selected_theme.theme_link  #6
             # Do not show wishing form
             if len(wishes) == 0:
-                return render(request, template_to_render,context={"alreadyWished":1, "data":data, "contact":contact, "parents":parents, "meetingPoint":meetingPoint, "testi":testimonials, "gallery":gallery })        
-            return render(request, template_to_render,context={"wishes": wishes,"alreadyWished":1,"data":data, "contact":contact, "parents":parents, "meetingPoint":meetingPoint,"testi":testimonials, "gallery":gallery})
+                return render(request, template_to_render,context={"alreadyWished":1, "data":data, "contact":contact, "parents":parents, "meetingPoint":meetingPoint, "testi":testimonials, "gallery":gallery }, status= HTTP_200_OK)        
+            return render(request, template_to_render,context={"wishes": wishes,"alreadyWished":1,"data":data, "contact":contact, "parents":parents, "meetingPoint":meetingPoint,"testi":testimonials, "gallery":gallery}, status= HTTP_200_OK)
 
         
         elif (invitation_type == "Birthday"):
@@ -1442,14 +1453,14 @@ def getDataAndDisplay(request, order_id):
             return render(request, template_to_render,context={})
 
         elif (invitation_type == "Opening"):
-            return HttpResponse("This is opening theme sample")
+            return HttpResponse("This is opening theme sample", status= HTTP_200_OK)
    
         else:
-            return HttpResponse("Nothing")
+            return HttpResponse("Nothing", status= HTTP_200_OK)
 
     else:
         # Display page not found here...
         print("Requested marriage order is not of user's... ")
-        return HttpResponse("Operation not allowed.")
+        return HttpResponse("Operation not allowed.", status= HTTP_400_BAD_REQUEST)
 
 
