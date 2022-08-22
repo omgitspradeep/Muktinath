@@ -359,7 +359,7 @@ class OrderViewset(viewsets.ViewSet):
                     return Response({'flag':6,'msg':'You cannot request this operation.'}, status= HTTP_400_BAD_REQUEST)
                 
                 serializer = AllOrdersSerializer(orders,many = False)
-                return Response(serializer.data)
+                return Response(serializer.data, status= HTTP_200_OK)
         except Exception as e:
             return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
 
@@ -394,7 +394,7 @@ class OrderViewset(viewsets.ViewSet):
                 # Send email confirming the Order
                 sendEmail(newlyCreatedOrder, order_for_user)
             
-                return Response({'flag':1,'msg':'Order Created Successfully'}, status= HTTP_201_CREATED)
+                return Response(serializer.data, status= HTTP_200_OK)
             return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
@@ -407,7 +407,7 @@ class OrderViewset(viewsets.ViewSet):
             serializer = AllOrdersSerializer(user_order,data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response({'flag':1,'msg':'Successful'})
+                return Response(serializer.data, status= HTTP_200_OK)
             return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'flag':0,'msg':str(e)}, status= HTTP_404_NOT_FOUND)
@@ -478,7 +478,7 @@ class GalleryViewSet(viewsets.ViewSet):
         try:
             gallery_photo = Gallery.objects.get(id=pk)
             serializer = MarraigeGalleryDataSerializer(gallery_photo)
-            return Response(serializer.data)
+            return Response(serializer.data, status= HTTP_200_OK)
         except Exception:
             return Response({'flag':0,'msg':'No images in Gallery to show.'})
 
@@ -486,7 +486,7 @@ class GalleryViewSet(viewsets.ViewSet):
         serializer = MarraigeGalleryDataSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'flag':1,'msg':'New Image is saved in Gallery.'}, status= HTTP_200_OK)
+            return Response(serializer.data, status= HTTP_200_OK)
         return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
 
 
@@ -496,7 +496,7 @@ class GalleryViewSet(viewsets.ViewSet):
             serializer = MarraigeGalleryDataSerializer(gallery_photo, data= request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response({'flag':1,'msg':'Image details updated'}, status= HTTP_200_OK)
+                return Response(serializer.data, status= HTTP_200_OK)
             return Response(serializer.errors, status= HTTP_400_BAD_REQUEST)
         except Exception:
             return Response({'flag':0,'msg':'No images in Gallery to show.'}, status= HTTP_404_NOT_FOUND)
@@ -1369,9 +1369,7 @@ def MarriageTestimonialsDataApi(request, main_data):
 def MarriageGalleryApi(request, main_data):
     try:
         gallery = Gallery.objects.filter(marriage_data=main_data.id)
-        print(gallery.count)
         if request.method == 'GET':
-            print("Hello world")
             serializer = MarraigeGalleryDataSerializer(gallery, many= True)
             return Response( serializer.data, status= HTTP_200_OK)
         else:
