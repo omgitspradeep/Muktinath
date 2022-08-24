@@ -1,4 +1,5 @@
 #Prebuilt
+from pydoc import plain
 from telnetlib import STATUS
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse, JsonResponse,HttpResponseRedirect
@@ -34,9 +35,9 @@ from django.utils.encoding import force_bytes, force_str
 #CUstom 
 
 from . import sampledata
-from .serializers import InvitationThemesSerializer, CustomerSerializer, InviteeSerializer,WisherSerializer,AllOrdersSerializer
+from .serializers import InvitationThemesSerializer, CustomerSerializer, InviteeSerializer, PlansSerializer,WisherSerializer,AllOrdersSerializer
 
-from .models import AllOrders
+from .models import AllOrders, Plans
 from .tokens import account_activation_token  
 
 from base.forms import SignupForm, AllThemeOrdersForm, MarriageInviteeForm,BDInviteeForm
@@ -75,6 +76,8 @@ import pytz
 import json
 import os
 import requests
+
+from base import serializers
 
 
 # Create your views here.
@@ -373,7 +376,6 @@ class OrderViewset(viewsets.ViewSet):
             return Response({'flag':6,'msg':'You cannot request this operation.'}, status= HTTP_400_BAD_REQUEST)
 
 
-
         try:
             serializer = AllOrdersSerializer(data = request.data)
             if serializer.is_valid():
@@ -590,11 +592,21 @@ def viewAsAPI(request, order_id):
 
 
 
-
-
-
-
-
+@api_view(['GET']) 
+def plansAndLanguages(request):
+    #authentication_classes=[JWTAuthentication]
+    #permission_classes = [IsAuthenticated]
+    try:
+        pla = Plans.objects.all()
+        lang = AllOrders.lang_choices       
+        languages= [dict(k=value, v=label) for value, label in lang] 
+        payment_gateways = AllOrders.PAYMENT_METHOD
+        gateways= [dict(k=value, v=label) for value, label in payment_gateways] 
+        serializer = PlansSerializer(pla, many=True)
+            #return Response({"msz":"Somethinng went Right"}, status= HTTP_200_OK)
+        return Response({'plans': serializer.data, 'lang': languages, 'payment': gateways}, status= HTTP_200_OK)
+    except Exception as e:
+        return Response({'flag':0,'msg':str(e)})
 
 
 

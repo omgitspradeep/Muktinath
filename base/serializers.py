@@ -1,4 +1,4 @@
-from .models import InvitationThemes, AllOrders, Invitee, Wisher
+from .models import InvitationThemes, AllOrders, Invitee, Plans, Wisher
 from accountapp.models import Customer
 from rest_framework import serializers
 
@@ -31,3 +31,7 @@ class WisherSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PlansSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plans
+        fields = '__all__'

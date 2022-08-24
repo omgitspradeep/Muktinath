@@ -114,6 +114,9 @@ class AllOrders(models.Model):
 
     PAYMENT_METHOD = (
         ('Khalti','Khalti'),
+        ('IME Pay','IME Pay'),
+        ('Esewa','Esewa'),
+        ('Local Bank','Local Bank'),
     )
 
     #my_theme_name, is_shared_from_socail_media, time_of_purchase, CUSTOMER(1:1), PLANS(1:1), MarriageData(1:1), InvitationThemes(1:M)

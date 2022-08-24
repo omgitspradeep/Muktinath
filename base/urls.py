@@ -71,6 +71,7 @@ urlpatterns = [
     #Temporary
     path('sampleapi/<int:themeid>/<str:theme_name>', views.sampleAPI, name='sample_api'),
     path('api/orders/viewAsApi/<int:order_id>/', views.viewAsAPI, name='viewAsAPI'),
+    path('api/plansAndLanguages/',views.plansAndLanguages,name='pandl'),
 
     
 
