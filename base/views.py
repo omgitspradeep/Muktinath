@@ -369,7 +369,7 @@ class OrderViewset(viewsets.ViewSet):
 
 
     def create(self, request):
-        order_for_user = Customer.objects.get(id=request.POST['user'])
+        order_for_user = Customer.objects.get(id=request.data.get('user'))
 
         # Check if api request is sent by authentic user.
         if order_for_user != request.user:
