@@ -610,8 +610,88 @@ def plansAndLanguages(request):
 
 
 
+@api_view(['GET'])
+def dashboardAPI(request,selectedorderid):
+    authentication_classes=[JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    all_orders = AllOrders.objects.filter(user=request.user)
+    
+    if all_orders.count()==0:
+        return render(request, 'dashboard_mobile.html', context= {"orderisnone":True})
+        
+    if selectedorderid==0:
+        selectedorderid=all_orders.first().id
+    selected_order= AllOrders.objects.get(id=selectedorderid)
+    myplan =selected_order.plans
+
+    print("OOOOOOOOOONE 1")
 
 
+    # RSVP INVITEES
+    labels = ['Responded','Not Responded']
+    values = [45,55]
+    colors= ['mediumturquoise','gold']
+    fig1 = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0.1, 0])])
+    fig1.update_traces(hoverinfo='label+percent', textinfo='value', textfont_size=20,marker=dict(colors=colors, line=dict(color='#000000', width=2)))
+    plot1 = fig1.to_html(full_html=False)
+
+
+    print("OOOOOOOOOONE 2")
+
+    # INVITEES DETAIL: Bar graph 
+    createdInviteesData = Invitee.objects.filter(order=selected_order)
+    createdInvitees =createdInviteesData.count()
+    noOfInviteesWhoViewInvitation = createdInviteesData.filter(is_invitation_viewed=True).count()
+    noOfInviteesWhoViewInvitationAndWished = Wisher.objects.filter(order= selected_order).count()
+    
+    Y =['Total Invitees','Created Invitees','Invitation Seen by Invitees','Invitees Who Wished']
+    X =[myplan.no_of_invitees,createdInvitees,noOfInviteesWhoViewInvitation,noOfInviteesWhoViewInvitationAndWished]
+    fig2 = go.Figure(go.Bar(
+                x=X,
+                y=Y,
+                orientation='h'))
+
+    #data = [go.Bar(x = X,y = Y)]  # for vertical  
+    #fig2 = go.Figure(data=data)
+    plot2 = fig2.to_html(full_html=False)
+
+    print("OOOOOOOOOONE 3")
+
+    # Donations: Bar graph 
+    # Use `hole` to create a donut-like pie chart
+    fig3 = go.Figure(data=[go.Pie(labels=['Prof. Ram Yadav','Er. Shyam Bastola','Dr. Geeta Tiwari','Ms. Neetu Karmacharya'], values=[4500, 2500, 1053, 500], hole=.3)])
+    fig3.add_annotation(x= 0.5, y = 0.5,text = 'रु',font = dict(size=20,family='Verdana', color='green'), showarrow = False)
+    plot3 = fig3.to_html(full_html=False)
+
+    print("OOOOOOOOOONE 4")
+
+
+    # Order Expiry Days: Half donut 
+    plan_days= myplan.no_of_days    # plan: 10 days, today: 7th day, 
+    days_till_now= get_days(selected_order.time_of_purchase) # how many days since Ordered
+
+    print("OOOOOOOOOONE 5")
+
+    fig4 = go.Figure(go.Indicator(
+        domain = {'x': [0, 1], 'y': [0, 1]},
+        value = days_till_now,
+        mode = "gauge+number+delta",
+        title = {'text': "Days"},
+        delta = {'reference': 2*days_till_now-plan_days, 'increasing': {'color': "darkgreen"}},  #  What value we put in referance, "delta= value-reference" so, reference is calculated by given formula because delta should give remaining days or exceeding days (i.e total - gone_days = value- reference)
+        gauge = {'axis': {'range': [None, plan_days]},
+                 'steps' : [
+                     {'range': [0, 5], 'color': "lightgray"},
+                     {'range': [5, 8], 'color': "gray"}],
+                 'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 9.5}}))
+
+    fig4.update_layout(font = {'color': "darkblue", 'family': "Arial"})
+    plot4 = fig4.to_html(full_html=False)
+    context = {'allorders':all_orders,'selectedorderid':selectedorderid, 'analytics':'Water','invitees':createdInvitees,'total_donation':20000, 'total_plan_days':plan_days,'plot_div_invitee': plot1,'plot_invitees_detail': plot2, 'plot_donation':plot3 , 'plot_plan_expiry':plot4}
+
+    print("OOOOOOOOOONE 6")
+
+    return render(request, 'dashboard_mobile.html', context= context)
 
 
 
