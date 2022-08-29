@@ -687,7 +687,7 @@ def dashboardAPI(request,selectedorderid):
 
     fig4.update_layout(font = {'color': "darkblue", 'family': "Arial"})
     plot4 = fig4.to_html(full_html=False)
-    context = {'allorders':all_orders,'selectedorderid':selectedorderid, 'analytics':'Water','invitees':createdInvitees,'total_donation':20000, 'total_plan_days':plan_days,'plot_div_invitee': plot1,'plot_invitees_detail': plot2, 'plot_donation':plot3 , 'plot_plan_expiry':plot4}
+    context = {'selectedorderid':selectedorderid, 'analytics':'Water','invitees':createdInvitees,'total_donation':20000, 'total_plan_days':plan_days,'plot_div_invitee': plot1,'plot_invitees_detail': plot2, 'plot_donation':plot3 , 'plot_plan_expiry':plot4}
 
     print("OOOOOOOOOONE 6")
 
